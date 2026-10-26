@@ -8,3 +8,4 @@
 - 18:35: hộp nổi danh sách bài để khai ngay; thư có liên kết từng bài.
 - 18:46: tạo kho `fitnhom`; thử trên một lớp trước; nút Quét ngay; tên Fit-Nhóm, ghi rõ mục đích.
 - Viết TL54 v0.1, README, CLAUDE.md, sổ tay; tạo thư mục Drive `Fit-Nhom\`.
+- 20:00: chủ dự án hỏi hai bạn cùng nhóm đều nộp / nộp bản cập nhật → TL54 v0.2 thêm mục 3a (mỗi bài nộp một câu khai; điền sẵn theo bản khai của bạn đã nộp; bảng chấm ghi "cùng nhóm với bài nộp của …"; tính đã nộp theo lúc sớm nhất). v0.1 vào `docs/ban-cu/`.

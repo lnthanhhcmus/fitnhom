@@ -11,7 +11,7 @@ Giảng viên không phải làm gì; tải bài về chấm, sổ điểm khôn
 | `local_fitnhom` | `local/fitnhom` (cài trước) |
 | `assignsubmission_fitnhom` | `mod/assign/submission/fitnhom` |
 
-Thiết kế: [`docs/TL54_Fit-Nhom_Thiet-ke_v0.1.md`](docs/TL54_Fit-Nhom_Thiet-ke_v0.1.md). Sổ tay dự án: [`docs/so-tay.md`](docs/so-tay.md).
+Thiết kế: [`docs/TL54_Fit-Nhom_Thiet-ke_v0.2.md`](docs/TL54_Fit-Nhom_Thiet-ke_v0.2.md). Sổ tay dự án: [`docs/so-tay.md`](docs/so-tay.md).
 
 Plugin khác đọc dữ liệu qua `\local_fitnhom\api` (có số phiên bản hợp đồng `HOPDONG`) — không đọc bảng trực tiếp.
 
