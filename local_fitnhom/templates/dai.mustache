@@ -1,0 +1,41 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_fitnhom/dai
+
+    Dải nhắc đầu trang và nội dung hộp nổi (ẩn, local_fitnhom/hopnoi mở) — bài nộp chưa khai thành viên.
+
+    Example context (json):
+    {
+        "so": 1, "sesskey": "abc", "ve": "/my/", "urlkhai": "/local/fitnhom/khai.php",
+        "dong": [{"submissionid": 5, "bai": "Đồ án 1", "mon": "CSC10001", "luc": "25/10/26, 20:15",
+            "urlnhom": "/local/fitnhom/khai.php?id=5", "urlbai": "/mod/assign/view.php?id=9"}]
+    }
+}}
+<div class="local-fitnhom-dai alert alert-info d-flex flex-wrap align-items-center py-2 px-3 mb-0 rounded-0" role="status">
+    <span class="mr-2 me-2">{{#str}} dai_chu, local_fitnhom, {{so}} {{/str}}</span>
+    <a class="btn btn-sm btn-primary" href="{{urlkhai}}">{{#str}} dai_nut, local_fitnhom {{/str}}</a>
+</div>
+<template id="local-fitnhom-hopnoi" data-title="{{#str}} hopnoi_tieude, local_fitnhom, {{so}} {{/str}}">
+    {{> local_fitnhom/danhsach }}
+    <form method="post" action="{{urlkhai}}" class="mt-3 text-end text-right">
+        <input type="hidden" name="sesskey" value="{{sesskey}}">
+        <input type="hidden" name="action" value="desau">
+        <input type="hidden" name="ve" value="{{ve}}">
+        <button type="submit" class="btn btn-secondary">{{#str}} desau, local_fitnhom {{/str}}</button>
+    </form>
+</template>
