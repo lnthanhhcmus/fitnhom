@@ -11,7 +11,7 @@ Giảng viên không phải làm gì; tải bài về chấm, sổ điểm khôn
 | `local_fitnhom` | `local/fitnhom` (cài trước) |
 | `assignsubmission_fitnhom` | `mod/assign/submission/fitnhom` |
 
-- Thiết kế: [`docs/TL54_Fit-Nhom_Thiet-ke_v0.3.md`](docs/TL54_Fit-Nhom_Thiet-ke_v0.3.md) (bản cũ ở `docs/ban-cu/`).
+- Thiết kế: [`docs/TL54_Fit-Nhom_Thiet-ke_v0.4.md`](docs/TL54_Fit-Nhom_Thiet-ke_v0.4.md) — mục 10 là bản 0.2 chưa làm, mục 11 khung bản 0.3 (bản cũ ở `docs/ban-cu/`). Phía FIT-CNL đọc Fit-Nhóm: `fit-cnl/docs/1.0/TL59_…` (bản 1.8.0).
 - Sổ tay dự án (bản đồ mã, lệnh, quyết định): [`docs/so-tay.md`](docs/so-tay.md); nhật ký [`docs/nhat-ky.md`](docs/nhat-ky.md); lịch sử bản [`docs/lich-su.md`](docs/lich-su.md).
 - Cài đặt và đi thử: [`docs/huong-dan/`](docs/huong-dan/).
 

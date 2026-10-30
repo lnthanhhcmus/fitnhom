@@ -3,7 +3,7 @@
 Fit-Nhóm: hai plugin Moodle 4.5 — `local_fitnhom` (chính) và `assignsubmission_fitnhom` (câu hỏi trên trang nộp bài) — để người nộp khai làm một mình hay bài nhóm cùng ai. **Dự án độc lập** với FIT-CNL (`lnthanhhcmus/fit-cnl`); FIT-CNL chỉ đọc qua `\local_fitnhom\api`. Chủ dự án viết tiếng Việt; tài liệu, chuỗi giao diện, commit bằng tiếng Việt; tên định danh tiếng Việt không dấu.
 
 ## Đọc trước khi sửa mã
-1. `docs/TL54_Fit-Nhom_Thiet-ke_*.md` (bản mới nhất) — mục 0 (vì sao có plugin), quyết định Q1–Q6, hợp đồng API (mục 6).
+1. `docs/TL54_Fit-Nhom_Thiet-ke_*.md` (bản mới nhất, hiện v0.4) — mục 0 (vì sao có plugin), quyết định Q1–Q7, hợp đồng API (mục 6), bản 0.2 (mục 10), câu mở phiên (mục 12). Phía FIT-CNL đọc Fit-Nhóm: `fit-cnl/docs/1.0/TL59_*.md`.
 2. `docs/so-tay.md` — tình trạng, quyết định, việc kế tiếp; `docs/nhat-ky.md`.
 
 ## Bắt buộc

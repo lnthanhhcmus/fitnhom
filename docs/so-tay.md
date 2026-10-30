@@ -1,6 +1,6 @@
 # Sổ tay Fit-Nhóm — đọc 5 phút nhớ lại tất cả
 
-Cập nhật: 26/10/2026 — **bản 0.1** (version 2026102700), chờ chủ dự án cài thử. Thiết kế TL54 v0.3.
+Cập nhật: 31/10/2026 — **bản 0.1** (version 2026102700), chờ chủ dự án cài thử. Thiết kế **TL54 v0.4** (31/10: mục 10 — bản 0.2; mục 11 — khung bản 0.3 ứng dụng điện thoại; mục 12 — câu mở phiên). Phía FIT-CNL: TL59 (kho `fit-cnl`, bản 1.8.0).
 
 ## 1. Tình trạng
 - Kho `lnthanhhcmus/fitnhom`. Thư mục Drive: `Thiết kế hệ thống hỗ trợ CNL\Fit-Nhom\` (Thiet-ke, Cai-dat, Anh, Huong-dan).
@@ -42,4 +42,6 @@ python3 dev/mkdocx.py <md> <docx> [thư-mục-ảnh]
 
 ## 7. Việc kế tiếp
 1. Chủ dự án cài thử 0.1 (phiếu cài đặt mục C–D) trên Moodle thử, thử một course.
-2. FIT-CNL 1.7.54: đọc `\local_fitnhom\api` (thiếu / lạ thì chạy như cũ); bài nộp chung không tính trễ / bỏ lỡ; sửa `hoatdong::sap_toi` chưa tính bài nộp theo nhóm của Moodle; TL45 A15-2 ghi ngoại lệ.
+2. **FIT-CNL 1.8.0** (kho `fit-cnl`, thiết kế `docs/1.0/TL59_Thiet-ke-1.8.0_FIT-CNL-doc-Fit-Nhom_v1.0.md`, 31/10/2026): đọc `\local_fitnhom\api` (bốn điều kiện, thiếu / lạ thì chạy như cũ); lúc nộp của em = sớm nhất trong tự nộp / nhóm Moodle / nộp chung; cột `hd_baitap.nguon`, `nguoinop`; sửa `hoatdong::sap_toi`; TL45 A15-2 ghi ngoại lệ. Các bản 1.7.54 → 1.7.79 của FIT-CNL **chưa** làm việc này (sổ tay FIT-CNL 1.7.79 mục 6.1a ghi nhầm "1.7.58").
+3. **Fit-Nhóm 0.2** (TL54 v0.4 mục 10; câu mở phiên mục 12): trang *Thành viên nhóm* cho giảng viên trong course + Excel; loại course theo `course.format = fitcnl`; Tình hình theo course + dấu hiệu bất thường cho quản trị; `api::cua_nguoi()`, `api::ap_dung()` (vẫn HOPDONG 1); `khai::luu` có giao dịch; phiếu cài đặt 0.2.
+4. Fit-Nhóm 0.3 (TL54 v0.4 mục 11): ứng dụng Moodle trên điện thoại — chỉ sau khi thử 0.1 trên máy thật.
