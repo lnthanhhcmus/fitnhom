@@ -384,7 +384,7 @@ Bộ sinh thêm `tao_assign_nop(int $courseid, int $userid, int $luc, array $gt 
 
 ### 6.11 Tài liệu FIT-CNL phải cập nhật trong bản 1.8.0
 
-- **TL45** → `TL45_Thiet-ke-tong-hop-1.8.0.md` v13.1 (bản 1.7.81 **không** chép vào `ban-cu/TL45/` — chỉ bản mốc, Q11): A15-2 thêm câu *(1.8.0, TL60) FIT-CNL **đọc** `\local_fitnhom\api` khi đủ bốn điều kiện — ngoại lệ duy nhất của "không đụng course môn", vẫn chỉ đọc; Fit-Nhóm là dự án riêng (TL54), FIT-CNL không phụ thuộc*; A15-4 thêm D2 / D3 và hai cột; A15-7 thêm *Sắp tới hạn bỏ bài đã có bạn nộp (nhóm Moodle, Fit-Nhóm) — sửa lỗi 1.3.0*; **A15-9** mới: quy tắc hiện tên (D6) và khối *Bài đã nộp chung*; A2 thêm `hd_fitnhom_bat`; Phụ lục B thêm *B-FN1: FIT-CNL không nhắc em khai Fit-Nhóm, không hiện danh sách thành viên nhóm cho chủ nhiệm, không ghi gì sang Fit-Nhóm*; Phụ lục D: *Fit-Nhóm*, *nộp chung*, *hợp đồng (HOPDONG)*; mục 8 bỏ dòng 1.8.0 chờ; mục 10 câu mở phiên đổi bản; Phụ lục E dòng v13.1.
+- **TL45** → `TL45_Thiet-ke-tong-hop-1.8.0.md` v13.2 (v13.1 = bản 1.7.81 trỏ TL60) (bản 1.7.81 **không** chép vào `ban-cu/TL45/` — chỉ bản mốc, Q11): A15-2 thêm câu *(1.8.0, TL60) FIT-CNL **đọc** `\local_fitnhom\api` khi đủ bốn điều kiện — ngoại lệ duy nhất của "không đụng course môn", vẫn chỉ đọc; Fit-Nhóm là dự án riêng (TL54), FIT-CNL không phụ thuộc*; A15-4 thêm D2 / D3 và hai cột; A15-7 thêm *Sắp tới hạn bỏ bài đã có bạn nộp (nhóm Moodle, Fit-Nhóm) — sửa lỗi 1.3.0*; **A15-9** mới: quy tắc hiện tên (D6) và khối *Bài đã nộp chung*; A2 thêm `hd_fitnhom_bat`; Phụ lục B thêm *B-FN1: FIT-CNL không nhắc em khai Fit-Nhóm, không hiện danh sách thành viên nhóm cho chủ nhiệm, không ghi gì sang Fit-Nhóm*; Phụ lục D: *Fit-Nhóm*, *nộp chung*, *hợp đồng (HOPDONG)*; mục 8 bỏ dòng 1.8.0 chờ; mục 10 câu mở phiên đổi bản; Phụ lục E dòng v13.2.
 - **HDBT** v4.5: mục 1 (bảng `hd_baitap` + 2 cột, lớp `nopchung`), mục 2 thêm **điều 47**: *Đọc plugin ngoài chỉ qua lớp hợp đồng có số phiên bản, bọc `\Throwable`, bốn điều kiện, trạng thái hiện ở Cấu hình; không đọc bảng của plugin ngoài* (mẫu: `nopchung`); mục 6 dòng `gop_hoatdong`.
 - `kich-ban/TL38_1.8.0.md`, `phieu-cai-dat.md` (mục H: bước CSDL 2026110100; thứ tự cài khi có Fit-Nhóm — mục 9 dưới), `so-tay.md` mục 1 / 3 / 5 / 6, `lich-su-cac-ban.md`, `nhat-ky.md`, sổ tay theo vai (`local_fitcnl/sotay/`: chủ nhiệm — đoạn *nộp chung*; sinh viên — *Bài đã nộp chung*; quản trị — công tắc), README gốc, CLAUDE.md (TL45 1.8.0, HDBT v4.5 điều 1–47, TL60).
 
@@ -443,7 +443,7 @@ Một phiên làm cả ba bước; mỗi bước **dừng** để chủ dự án
 
 | Rủi ro | Cách giảm |
 |---|---|
-| Phiên viết mã đọc TL59 v1.0 cũ (Project claude.ai, Drive) thay vì TL60 | TL59 trong kho đổi thành một trang trỏ TL60; Project và Drive chỉ còn TL60; câu mở phiên chỉ nêu TL60 |
+| Phiên viết mã đọc TL59 v1.0 cũ thay vì TL60 | TL59 trong kho `fit-cnl` chuyển vào `docs/1.0/ban-cu/` (chỉ để tra), mọi chỗ trỏ TL60; Project claude.ai và Drive chỉ còn TL60; câu mở phiên chỉ nêu TL60 |
 | Hai bản chép TL60 lệch nhau | Mục 0 nguyên tắc 1; câu mở phiên bắt đổi cả hai; mục 13 ghi phiên bản |
 | Bài kiểm cũ của Fit-Nhóm đỏ khi tách tệp (5.8) | giữ `khai::tom_tat()` chuyển tiếp; tách tệp là bước riêng, chạy bộ cũ ngay sau |
 | `extend_navigation_course` không hiện ở theme Trường | kiểm bằng walk với theme mặc định (Boost); phiếu cài đặt ghi *nếu không thấy mục, vào `local/fitnhom/course.php?id=`* |
