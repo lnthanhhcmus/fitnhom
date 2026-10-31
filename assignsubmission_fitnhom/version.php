@@ -25,8 +25,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'assignsubmission_fitnhom';
-$plugin->version   = 2026102700;
+$plugin->version   = 2026110100;
 $plugin->requires  = 2024100700;
 $plugin->maturity  = MATURITY_BETA;
-$plugin->release   = '0.1';
-$plugin->dependencies = ['local_fitnhom' => 2026102700];
+$plugin->release   = '0.2';
+$plugin->dependencies = ['local_fitnhom' => 2026110100];

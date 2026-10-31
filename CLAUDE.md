@@ -3,7 +3,7 @@
 Fit-Nhóm: hai plugin Moodle 4.5 — `local_fitnhom` (chính) và `assignsubmission_fitnhom` (câu hỏi trên trang nộp bài) — để người nộp khai làm một mình hay bài nhóm cùng ai. **Dự án độc lập** với FIT-CNL (`lnthanhhcmus/fit-cnl`); FIT-CNL chỉ đọc qua `\local_fitnhom\api`. Chủ dự án viết tiếng Việt; tài liệu, chuỗi giao diện, commit bằng tiếng Việt; tên định danh tiếng Việt không dấu.
 
 ## Đọc trước khi sửa mã
-1. **`docs/TL60_Thiet-ke-dot-1.8_*.md`** (hiện v1.1) — thiết kế **đợt 1.8** (Fit-Nhóm 0.2 + FIT-CNL 1.8.0): hợp đồng đầy đủ (mục 4), đặc tả 0.2 (mục 5), thứ tự làm (mục 7), câu mở phiên (mục 12), **sổ điều chỉnh (mục 13) — điều gì phải làm khác tài liệu thì ghi vào đó trước, đổi cả bản gốc ở `fit-cnl/docs/1.0/`**.
+1. **`docs/TL60_Thiet-ke-dot-1.8_*.md`** (hiện v1.2) — thiết kế **đợt 1.8** (Fit-Nhóm 0.2 + FIT-CNL 1.8.0): hợp đồng đầy đủ (mục 4), đặc tả 0.2 (mục 5), thứ tự làm (mục 7), câu mở phiên (mục 12), **sổ điều chỉnh (mục 13) — điều gì phải làm khác tài liệu thì ghi vào đó trước, đổi cả bản gốc ở `fit-cnl/docs/1.0/`**.
 2. `docs/TL54_Fit-Nhom_Thiet-ke_*.md` (hiện v0.5) — thiết kế sản phẩm: mục 0 (vì sao có plugin), quyết định Q1–Q7, cách dùng (mục 2–5), hợp đồng rút gọn (mục 6), rủi ro (mục 8).
 3. `docs/so-tay.md` — tình trạng, bản đồ mã, quyết định, việc kế tiếp; `docs/nhat-ky.md`; `docs/lich-su.md`.
 

@@ -49,7 +49,8 @@ class quet_ngay extends \core\event\base {
      * @return string
      */
     public function get_description() {
-        return "Người dùng {$this->userid} bấm Quét ngay: " . (int) ($this->other['so'] ?? 0) . ' bài nộp vào danh sách chờ khai.';
+        return "Người dùng {$this->userid} bấm Quét ngay: xét " . (int) ($this->other['soxem'] ?? 0) . ' bài nộp, '
+            . (int) ($this->other['so'] ?? 0) . ' bài vào danh sách chờ khai.';
     }
 
     /**

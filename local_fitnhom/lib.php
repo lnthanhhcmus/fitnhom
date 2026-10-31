@@ -33,4 +33,38 @@ function local_fitnhom_chedo_doi($ten) {
         set_config('batdau', time(), 'local_fitnhom');
     }
     \local_fitnhom\phamvi::xoa_dem();
+    \local_fitnhom\cho::xoa_dem();
+}
+
+/**
+ * Đổi cấu hình phạm vi (danh sách thử, loại trừ): xóa đệm phạm vi trong lượt chạy.
+ *
+ * @param string $ten Tên cấu hình.
+ * @return void
+ */
+function local_fitnhom_phamvi_doi($ten) {
+    \local_fitnhom\phamvi::xoa_dem();
+}
+
+/**
+ * Mục *Thành viên nhóm (Fit-Nhóm)* ở điều hướng course (menu *Thêm*) cho người chấm được bài (giảng viên, trợ giảng — TL60
+ * mục 5.1, Q8). Sinh viên không thấy.
+ *
+ * @param navigation_node $nav Nút điều hướng course.
+ * @param stdClass $course Course.
+ * @param context_course $ctx Ngữ cảnh course.
+ * @return void
+ */
+function local_fitnhom_extend_navigation_course(navigation_node $nav, stdClass $course, context_course $ctx) {
+    if ((int) $course->id <= SITEID || !has_capability('mod/assign:grade', $ctx)) {
+        return;
+    }
+    $nav->add(
+        get_string('nav_course', 'local_fitnhom'),
+        new moodle_url('/local/fitnhom/course.php', ['id' => $course->id]),
+        navigation_node::TYPE_SETTING,
+        null,
+        'local_fitnhom_course',
+        new pix_icon('i/group', '')
+    );
 }

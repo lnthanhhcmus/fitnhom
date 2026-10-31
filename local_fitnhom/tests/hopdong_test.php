@@ -78,4 +78,37 @@ final class hopdong_test extends \advanced_testcase {
         ], $tv, 'Không có C (từ chối), không có E (không ai khai)');
         $this->assertArrayNotHasKey((int) $sv[2]->id, $tv);
     }
+
+    /**
+     * 0.2 (TL60 mục 5.4): HOPDONG vẫn 1; thêm cua_nguoi() (H5) và ap_dung() (H6) — chữ ký và ngữ nghĩa chính; hàm không ném lỗi
+     * với bài tập không tồn tại (H7).
+     */
+    public function test_hop_dong_1_them_ham_02(): void {
+        $this->resetAfterTest();
+        $this->assertSame(1, api::HOPDONG);
+        foreach (['cua_nguoi' => ['int', 'int', 'int'], 'ap_dung' => ['int']] as $ten => $kieu) {
+            $r = new \ReflectionMethod(api::class, $ten);
+            $this->assertTrue($r->isStatic() && $r->isPublic(), $ten);
+            $this->assertSame($kieu, array_map(fn($p) => (string) $p->getType(), $r->getParameters()), $ten);
+        }
+        $this->assertSame('array', (string) (new \ReflectionMethod(api::class, 'cua_nguoi'))->getReturnType());
+        $this->assertSame('bool', (string) (new \ReflectionMethod(api::class, 'ap_dung'))->getReturnType());
+        $this->assertSame([], api::thanhvien(999999));
+        $this->assertSame([], api::cua_nguoi(999999, 0, PHP_INT_MAX));
+        $this->che_do(phamvi::BAT);
+        [$course, $a, $sv] = $this->bai_tap(3);
+        $this->assertTrue(api::ap_dung((int) $course->id));
+        $this->nop($sv[0], $a, ['fitnhom_loai' => khai::NHOM, 'fitnhom_tv' => [$sv[1]->id, $sv[2]->id]]);
+        $luc = (int) $this->bai_nop($a, $sv[0])->timemodified;
+        $aid = (int) $a->get_instance()->id;
+        $this->assertSame([$aid => ['nguoinop' => (int) $sv[0]->id, 'luc' => $luc]], api::cua_nguoi((int) $sv[1]->id, $luc, $luc));
+        $k = khai::cua_bai_nop((int) $this->bai_nop($a, $sv[0])->id);
+        khai::tu_choi((int) $k->tv[(int) $sv[2]->id]->id, (int) $sv[2]->id, false, time());
+        $this->assertSame([], api::cua_nguoi((int) $sv[2]->id, 0, PHP_INT_MAX), 'Không phải em → không có');
+        // H4: kết quả không phụ thuộc chế độ hiện tại.
+        $this->che_do(phamvi::TAT);
+        $this->assertFalse(api::ap_dung((int) $course->id));
+        $this->assertArrayHasKey($aid, api::cua_nguoi((int) $sv[1]->id, 0, PHP_INT_MAX));
+        $this->assertArrayHasKey((int) $sv[1]->id, api::thanhvien($aid));
+    }
 }

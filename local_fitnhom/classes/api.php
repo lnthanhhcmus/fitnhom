@@ -17,11 +17,13 @@
 namespace local_fitnhom;
 
 /**
- * Hợp đồng cho plugin khác (TL54 mục 6) — FIT-CNL và mọi plugin muốn biết "ai đã nộp chung". Plugin khác **chỉ** gọi lớp này,
- * không đọc bảng của Fit-Nhóm.
+ * Hợp đồng cho plugin khác (TL60 mục 4 — nguồn duy nhất của ngữ nghĩa, bảo đảm H1–H8) — FIT-CNL và mọi plugin muốn biết "ai
+ * đã nộp chung". Plugin khác **chỉ** gọi lớp này, không đọc bảng của Fit-Nhóm.
  *
- * Luật giữ hợp đồng: trong cùng HOPDONG không đổi ý nghĩa dang_bat() và thanhvien(). Muốn đổi thì thêm hàm mới hay tăng
- * HOPDONG (plugin dùng tự bỏ qua khi gặp số lạ). Bài kiểm tests/hopdong_test.php giữ hợp đồng này.
+ * Luật giữ hợp đồng: trong cùng HOPDONG không đổi ý nghĩa các hàm đã có. Muốn đổi thì thêm hàm mới hay tăng HOPDONG (plugin
+ * dùng tự bỏ qua khi gặp số lạ). 0.2 thêm cua_nguoi(), ap_dung() — HOPDONG vẫn 1; plugin gọi kiểm method_exists() trước.
+ * Kết quả không phụ thuộc chế độ / phạm vi hiện tại (H4) — bên gọi muốn tôn trọng chế độ thì tự kiểm dang_bat() / ap_dung().
+ * Bài kiểm tests/hopdong_test.php giữ hợp đồng này.
  *
  * @package    local_fitnhom
  * @copyright  2026 Khoa Công nghệ Thông tin, Trường Đại học Khoa học Tự nhiên, ĐHQG-HCM
@@ -69,5 +71,47 @@ class api {
         }
         $rs->close();
         return $kq;
+    }
+
+    /**
+     * Các bài tập mà em được khai cùng nộp, bài nộp có lúc nộp trong [tu, den] (đóng hai đầu) — TL60 H5. Cùng luật lọc với
+     * thanhvien() (bài nộp đã gửi, lần mới nhất, câu khai bài nhóm, em chưa bấm "Không phải em", không gồm chính người nộp);
+     * mỗi bài tập một dòng — bài nộp sớm nhất.
+     *
+     * @param int $userid Em được khai.
+     * @param int $tu Từ (giây, gồm).
+     * @param int $den Đến (giây, gồm).
+     * @return array assignid => ['nguoinop' => userid người nộp, 'luc' => assign_submission.timemodified]
+     */
+    public static function cua_nguoi(int $userid, int $tu, int $den): array {
+        global $DB;
+        $kq = [];
+        $rs = $DB->get_recordset_sql(
+            "SELECT t.id, t.assignid, k.userid AS nguoinop, s.timemodified AS luc
+               FROM {local_fitnhom_tv} t
+               JOIN {local_fitnhom_khai} k ON k.id = t.khaiid
+               JOIN {assign_submission} s ON s.id = k.submissionid
+              WHERE t.userid = :u AND t.trangthai = :kh AND s.status = :st AND s.latest = 1 AND k.userid <> :u2
+                    AND s.timemodified >= :tu AND s.timemodified <= :den
+           ORDER BY s.timemodified ASC, t.id ASC",
+            ['u' => $userid, 'kh' => khai::KHAI, 'st' => 'submitted', 'u2' => $userid, 'tu' => $tu, 'den' => $den]
+        );
+        foreach ($rs as $r) {
+            if (!isset($kq[(int) $r->assignid])) {
+                $kq[(int) $r->assignid] = ['nguoinop' => (int) $r->nguoinop, 'luc' => (int) $r->luc];
+            }
+        }
+        $rs->close();
+        return $kq;
+    }
+
+    /**
+     * Course có áp dụng Fit-Nhóm không (chế độ, danh sách thử, loại trừ theo định dạng / mẫu tên / danh mục) — TL60 H6.
+     *
+     * @param int $courseid Course.
+     * @return bool Chế độ Tắt hay SITEID → false.
+     */
+    public static function ap_dung(int $courseid): bool {
+        return phamvi::course_ap_dung($courseid);
     }
 }

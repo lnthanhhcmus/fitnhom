@@ -18,7 +18,8 @@ namespace local_fitnhom;
 
 /**
  * Chế độ và phạm vi áp dụng (TL54 mục 4): Tắt / Thử nghiệm (chỉ các course chọn) / Bật toàn trang; course không áp dụng theo
- * danh mục hay mẫu tên rút gọn; bài đã bật "Nộp theo nhóm" của Moodle không hỏi.
+ * định dạng course (0.2 — lớp chủ nhiệm FIT-CNL có format fitcnl), mẫu tên rút gọn hay danh mục; bài đã bật "Nộp theo nhóm"
+ * của Moodle không hỏi.
  *
  * @package    local_fitnhom
  * @copyright  2026 Khoa Công nghệ Thông tin, Trường Đại học Khoa học Tự nhiên, ĐHQG-HCM
@@ -32,7 +33,7 @@ class phamvi {
     /** @var string Bật toàn trang. */
     public const BAT = 'BAT';
 
-    /** @var array Đệm trong một lượt chạy: courseid => bool. */
+    /** @var array Đệm trong một lượt chạy: courseid => lý do ('' = áp dụng). */
     private static $dem = [];
 
     /**
@@ -92,46 +93,79 @@ class phamvi {
         return (bool) preg_match('/^' . $re . '$/iu', $ma);
     }
 
+    /** @var string Lý do không áp dụng: chế độ Tắt (hay course không hợp lệ). */
+    public const LY_TAT = 'TAT';
+    /** @var string Lý do: chế độ Thử nghiệm, course không trong danh sách thử. */
+    public const LY_KHONG_THU = 'KHONG_THU';
+    /** @var string Lý do: định dạng course loại trừ (vd. fitcnl — lớp chủ nhiệm). */
+    public const LY_FORMAT = 'FORMAT';
+    /** @var string Lý do: mã rút gọn khớp mẫu loại trừ. */
+    public const LY_MAU = 'MAU';
+    /** @var string Lý do: course trong danh mục loại trừ. */
+    public const LY_DANHMUC = 'DANHMUC';
+
     /**
-     * Course có áp dụng Fit-Nhóm không (theo chế độ, danh sách thử, loại trừ).
+     * Vì sao course không áp dụng Fit-Nhóm (TL60 mục 5.2) — '' khi có áp dụng. Thứ tự lưới: chế độ, danh sách thử, định
+     * dạng course (`loaitru_format`, mặc định fitcnl), mẫu mã rút gọn, danh mục. Không gọi FIT-CNL (TL60 D4).
      *
      * @param int $courseid Course.
-     * @return bool
+     * @return string '' | TAT | KHONG_THU | FORMAT | MAU | DANHMUC
      */
-    public static function course_ap_dung(int $courseid): bool {
+    public static function ly_do(int $courseid): string {
         global $DB;
         $chedo = self::che_do();
         if ($chedo === self::TAT || $courseid <= SITEID) {
-            return false;
+            return self::LY_TAT;
         }
         if (array_key_exists($courseid, self::$dem)) {
             return self::$dem[$courseid];
         }
-        $c = $DB->get_record('course', ['id' => $courseid], 'id, shortname, category');
-        $kq = (bool) $c;
-        if ($kq && $chedo === self::THU) {
-            $thu = array_map(fn($s) => \core_text::strtolower($s), self::dong('khoathu'));
-            $kq = in_array(\core_text::strtolower((string) $c->shortname), $thu, true);
+        $c = $DB->get_record('course', ['id' => $courseid], 'id, shortname, category, format');
+        if (!$c) {
+            return self::$dem[$courseid] = self::LY_TAT;
         }
-        if ($kq) {
+        $ly = '';
+        if ($chedo === self::THU) {
+            $thu = array_map(fn($s) => \core_text::strtolower($s), self::dong('khoathu'));
+            if (!in_array(\core_text::strtolower((string) $c->shortname), $thu, true)) {
+                $ly = self::LY_KHONG_THU;
+            }
+        }
+        if ($ly === '') {
+            $fm = array_map(fn($s) => \core_text::strtolower($s), self::dong('loaitru_format'));
+            if (in_array(\core_text::strtolower((string) $c->format), $fm, true)) {
+                $ly = self::LY_FORMAT;
+            }
+        }
+        if ($ly === '') {
             foreach (self::dong('loaitru_mau') as $mau) {
                 if (self::khop((string) $c->shortname, $mau)) {
-                    $kq = false;
+                    $ly = self::LY_MAU;
                     break;
                 }
             }
         }
         $dm = array_filter(array_map('intval', explode(',', (string) get_config('local_fitnhom', 'loaitru_danhmuc'))));
-        if ($kq && $dm) {
+        if ($ly === '' && $dm) {
             $path = (string) $DB->get_field('course_categories', 'path', ['id' => $c->category]);
             foreach ($dm as $id) {
                 if (strpos($path . '/', '/' . $id . '/') !== false) {
-                    $kq = false;
+                    $ly = self::LY_DANHMUC;
                     break;
                 }
             }
         }
-        return self::$dem[$courseid] = $kq;
+        return self::$dem[$courseid] = $ly;
+    }
+
+    /**
+     * Course có áp dụng Fit-Nhóm không (theo chế độ, danh sách thử, loại trừ theo định dạng / mẫu tên / danh mục).
+     *
+     * @param int $courseid Course.
+     * @return bool
+     */
+    public static function course_ap_dung(int $courseid): bool {
+        return self::ly_do($courseid) === '';
     }
 
     /**

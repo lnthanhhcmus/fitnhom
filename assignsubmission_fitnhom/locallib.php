@@ -173,7 +173,9 @@ class assign_submission_fitnhom extends assign_submission_plugin {
      */
     public function view_summary(stdClass $submission, &$showviewlink) {
         $showviewlink = false;
-        return \local_fitnhom\khai::tom_tat($submission);
+        $lk = class_exists('\\local_fitnhom\\tomtat')
+            ? \local_fitnhom\tomtat::lien_ket((int) $this->assignment->get_course()->id) : '';
+        return $lk . \local_fitnhom\khai::tom_tat($submission);
     }
 
     /**

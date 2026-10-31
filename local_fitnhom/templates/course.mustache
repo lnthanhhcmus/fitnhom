@@ -1,0 +1,119 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_fitnhom/course
+
+    Trang *Thành viên nhóm* của một course (giảng viên, trợ giảng): chế độ, course có áp dụng không; bảng theo bài tập hay
+    chi tiết một bài; nút Tải Excel. Không có nút nhắc, không sửa câu khai hộ (TL60 mục 5.1).
+
+    Example context (json):
+    {
+        "chedo": "Bật toàn trang", "apdung": true, "lydo": "", "urlve": "/local/fitnhom/course.php?id=2",
+        "urltai": "/local/fitnhom/course.php?id=2&tai=1", "coban": true, "cochitiet": false,
+        "bai": [{"assignid": 3, "ten": "Đồ án 1", "han": "25/10/26, 23:59", "nhommd": false, "nop": 3, "mot": 1, "nhom": 1,
+            "ban": 1, "tuchoi": 0, "chuakhai": 1, "cuu": 1, "url": "/local/fitnhom/course.php?id=2&assign=3",
+            "urlcham": "/mod/assign/view.php?id=9&action=grading"}],
+        "chitiet": null
+    }
+}}
+<div class="local-fitnhom-course">
+    <p class="mb-2">
+        {{#str}} chedo, local_fitnhom {{/str}}: <strong>{{chedo}}</strong> ·
+        {{#apdung}}<span class="text-success">{{#str}} course_apdung, local_fitnhom {{/str}}</span>{{/apdung}}
+        {{^apdung}}<span class="text-muted">{{#str}} course_khongapdung, local_fitnhom, {{lydo}} {{/str}}</span>{{/apdung}}
+    </p>
+    {{#apdung}}
+    {{#cochitiet}}
+    {{#chitiet}}
+    <p><a href="{{urlve}}">&laquo; {{#str}} course_ve, local_fitnhom {{/str}}</a></p>
+    <h3 class="h5">{{ten}}{{#han}} <small class="text-muted">· {{#str}} cot_han, local_fitnhom {{/str}} {{han}}</small>{{/han}}</h3>
+    {{#codong}}
+    <div class="table-responsive">
+    <table class="generaltable table-sm local-fitnhom-chitiet">
+        <thead><tr>
+            <th>{{#str}} cot_nguoinop, local_fitnhom {{/str}}</th>
+            <th>{{#str}} cot_luc, local_fitnhom {{/str}}</th>
+            <th>{{#str}} cot_khai, local_fitnhom {{/str}}</th>
+            <th>{{#str}} cot_cacban, local_fitnhom {{/str}}</th>
+        </tr></thead>
+        <tbody>
+        {{#dong}}
+        <tr>
+            <td>{{nguoinop}}</td>
+            <td>{{luc}}</td>
+            <td>{{#chuakhai}}<span class="text-muted">{{loai}}</span>{{/chuakhai}}{{^chuakhai}}{{loai}}{{/chuakhai}}</td>
+            <td>
+                {{#ban}}<div>{{#tuchoi}}<del>{{ten}}</del> <span class="small text-muted">({{#str}} khongphaiem, local_fitnhom {{/str}})</span>{{/tuchoi}}{{^tuchoi}}{{ten}}{{/tuchoi}}</div>{{/ban}}
+                {{#cungnhom}}<div class="small text-muted">{{cungnhom}}</div>{{/cungnhom}}
+            </td>
+        </tr>
+        {{/dong}}
+        </tbody>
+    </table>
+    </div>
+    {{/codong}}
+    {{^codong}}<p class="text-muted">{{#str}} course_chuanop, local_fitnhom {{/str}}</p>{{/codong}}
+    {{/chitiet}}
+    {{/cochitiet}}
+    {{^cochitiet}}
+    {{#coban}}
+    <div class="table-responsive">
+    <table class="generaltable table-sm local-fitnhom-theobai">
+        <thead><tr>
+            <th>{{#str}} cot_bai, local_fitnhom {{/str}}</th>
+            <th>{{#str}} cot_han, local_fitnhom {{/str}}</th>
+            <th class="text-end text-right">{{#str}} cot_nop, local_fitnhom {{/str}}</th>
+            <th class="text-end text-right">{{#str}} cot_motminh, local_fitnhom {{/str}}</th>
+            <th class="text-end text-right">{{#str}} cot_nhom, local_fitnhom {{/str}}</th>
+            <th class="text-end text-right">{{#str}} cot_ban, local_fitnhom {{/str}}</th>
+            <th class="text-end text-right">{{#str}} cot_tuchoi, local_fitnhom {{/str}}</th>
+            <th class="text-end text-right">{{#str}} cot_chuakhai, local_fitnhom {{/str}}</th>
+            <th class="text-end text-right">{{#str}} cot_cuu, local_fitnhom {{/str}}</th>
+        </tr></thead>
+        <tbody>
+        {{#bai}}
+        <tr>
+            {{#nhommd}}
+            <td>{{#urlcham}}<a href="{{urlcham}}">{{ten}}</a>{{/urlcham}}{{^urlcham}}{{ten}}{{/urlcham}}</td>
+            <td>{{han}}</td>
+            <td colspan="7" class="text-muted small">{{#str}} course_nhommd, local_fitnhom {{/str}}</td>
+            {{/nhommd}}
+            {{^nhommd}}
+            <td><a href="{{url}}">{{ten}}</a>{{#urlcham}} <a class="small" href="{{urlcham}}" title="{{#str}} course_bangcham, local_fitnhom {{/str}}">↗</a>{{/urlcham}}</td>
+            <td>{{han}}</td>
+            <td class="text-end text-right">{{nop}}</td>
+            <td class="text-end text-right">{{mot}}</td>
+            <td class="text-end text-right">{{nhom}}</td>
+            <td class="text-end text-right">{{ban}}</td>
+            <td class="text-end text-right">{{tuchoi}}</td>
+            <td class="text-end text-right">{{chuakhai}}</td>
+            <td class="text-end text-right"><strong>{{cuu}}</strong></td>
+            {{/nhommd}}
+        </tr>
+        {{/bai}}
+        </tbody>
+    </table>
+    </div>
+    <p class="small text-muted">{{#str}} course_giaithich, local_fitnhom {{/str}}</p>
+    {{/coban}}
+    {{^coban}}<p class="text-muted">{{#str}} course_chuacobai, local_fitnhom {{/str}}</p>{{/coban}}
+    {{/cochitiet}}
+    <form method="post" action="{{urltai}}" class="mt-2">
+        <button type="submit" class="btn btn-secondary">{{#str}} nut_taiexcel, local_fitnhom {{/str}}</button>
+    </form>
+    {{/apdung}}
+</div>

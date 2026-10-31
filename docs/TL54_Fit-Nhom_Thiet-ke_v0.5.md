@@ -141,7 +141,7 @@ Không lưu nội dung bài. Khai báo với **Privacy API** của Moodle (xuấ
 | Bản | Nội dung | Tình trạng |
 |---|---|---|
 | **Fit-Nhóm 0.1** | Hai thành phần; mục 2–5, 7; trang quản trị; Quét ngay; PHPUnit + đi thử trình duyệt; README, hướng dẫn quản trị, trang ngắn cho giảng viên / sinh viên; phiếu cài đặt | **phát hành 26/10/2026**, chờ chủ dự án cài thử trên một course |
-| **Fit-Nhóm 0.2** | Trang *Thành viên nhóm* cho giảng viên; nhận diện course theo định dạng; tình hình theo course + Cần xem; hộp nổi nhẹ; `cua_nguoi()`, `ap_dung()`; `upgrade.php`; privacy xuất `cho`; tách tệp | thiết kế xong — **TL60 mục 5**, chờ phiên viết mã (bước 1 của đợt 1.8) |
+| **Fit-Nhóm 0.2** | Trang *Thành viên nhóm* cho giảng viên; nhận diện course theo định dạng; tình hình theo course + Cần xem; hộp nổi nhẹ; `cua_nguoi()`, `ap_dung()`; `upgrade.php`; privacy xuất `cho`; tách tệp | **phát hành 31/10/2026** (version 2026110100, TL60 v1.2 mục 5, 13) — chờ chủ dự án cài thử |
 | **FIT-CNL 1.8.0** | Đọc hợp đồng (mục 6) để tính *đã nộp* cho em được khai; sửa *Sắp tới hạn* bỏ sót bài nhóm | thiết kế xong — **TL60 mục 6**, bước 2 của đợt 1.8 (kho `fit-cnl`) |
 | Fit-Nhóm 0.3 (khi cần) | Ứng dụng Moodle trên điện thoại — khung ở TL60 mục 10 | sau khi thử 0.1 / 0.2 trên máy thật |
 

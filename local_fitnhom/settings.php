@@ -55,6 +55,17 @@ if ($hassiteconfig) {
             40,
             4
         ));
+        $f = new admin_setting_configtextarea(
+            'local_fitnhom/loaitru_format',
+            new lang_string('caidat_loaitru_format', 'local_fitnhom'),
+            new lang_string('caidat_loaitru_format_mota', 'local_fitnhom'),
+            'fitcnl',
+            PARAM_RAW,
+            40,
+            3
+        );
+        $f->set_updatedcallback('local_fitnhom_phamvi_doi');
+        $s->add($f);
         $s->add(new admin_setting_configtextarea(
             'local_fitnhom/loaitru_mau',
             new lang_string('loaitru_mau', 'local_fitnhom'),
@@ -76,6 +87,20 @@ if ($hassiteconfig) {
             new lang_string('toida', 'local_fitnhom'),
             new lang_string('toida_help', 'local_fitnhom'),
             10,
+            PARAM_INT
+        ));
+        $s->add(new admin_setting_configtext(
+            'local_fitnhom/batthuong_tuchoi',
+            new lang_string('caidat_batthuong_tuchoi', 'local_fitnhom'),
+            new lang_string('caidat_batthuong_tuchoi_mota', 'local_fitnhom'),
+            3,
+            PARAM_INT
+        ));
+        $s->add(new admin_setting_configtext(
+            'local_fitnhom/batthuong_khai',
+            new lang_string('caidat_batthuong_khai', 'local_fitnhom'),
+            new lang_string('caidat_batthuong_khai_mota', 'local_fitnhom'),
+            5,
             PARAM_INT
         ));
         $s->add(new admin_setting_configselect(

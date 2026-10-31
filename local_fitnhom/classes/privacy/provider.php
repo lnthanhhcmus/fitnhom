@@ -58,8 +58,9 @@ class provider implements
         );
         $c->add_database_table(
             'local_fitnhom_cho',
-            ['userid' => 'privacy:metadata:cho:userid',
-            'submissionid' => 'privacy:metadata:submissionid', 'timecreated' => 'privacy:metadata:timemodified'],
+            ['userid' => 'privacy:metadata:cho:userid', 'assignid' => 'privacy:metadata:assignid',
+            'courseid' => 'privacy:metadata:courseid', 'submissionid' => 'privacy:metadata:submissionid',
+            'timecreated' => 'privacy:metadata:cho:timecreated'],
             'privacy:metadata:cho'
         );
         $c->add_user_preference(\local_fitnhom\hook_callbacks::DESAU, 'privacy:metadata:pref_desau');
@@ -143,7 +144,7 @@ class provider implements
             if (!$aid) {
                 continue;
             }
-            $d = ['khai' => [], 'duockhai' => []];
+            $d = ['khai' => [], 'duockhai' => [], 'cho' => []];
             foreach ($DB->get_records('local_fitnhom_khai', ['assignid' => $aid, 'userid' => $u]) as $k) {
                 $ban = [];
                 foreach ($DB->get_records('local_fitnhom_tv', ['khaiid' => $k->id]) as $t) {
@@ -159,7 +160,13 @@ class provider implements
                 $d['duockhai'][] = ['nguoinop' => $x ? fullname($x) : $nop, 'trangthai' => $t->trangthai,
                     'tuchoiluc' => $t->tuchoiluc ? \core_privacy\local\request\transform::datetime($t->tuchoiluc) : ''];
             }
-            if ($d['khai'] || $d['duockhai']) {
+            // 0.2 (TL60 mục 5.7): bài nộp đang chờ khai ở hộp nổi.
+            foreach ($DB->get_records('local_fitnhom_cho', ['assignid' => $aid, 'userid' => $u], 'id') as $c) {
+                $d['cho'][] = ['assignid' => (int) $c->assignid, 'courseid' => (int) $c->courseid,
+                    'submissionid' => (int) $c->submissionid,
+                    'timecreated' => \core_privacy\local\request\transform::datetime($c->timecreated)];
+            }
+            if ($d['khai'] || $d['duockhai'] || $d['cho']) {
                 writer::with_context($ctx)->export_data([get_string('pluginname', 'local_fitnhom')], (object) $d);
             }
         }
@@ -211,6 +218,7 @@ class provider implements
         }
         $DB->delete_records('local_fitnhom_tv', ['assignid' => $aid, 'userid' => $u]);
         $DB->delete_records('local_fitnhom_cho', ['assignid' => $aid, 'userid' => $u]);
+        \local_fitnhom\cho::xoa_dem($u);
     }
 
     /**

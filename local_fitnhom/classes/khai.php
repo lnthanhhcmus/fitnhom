@@ -17,8 +17,9 @@
 namespace local_fitnhom;
 
 /**
- * Câu khai của một bài nộp (TL54 mục 2, 3, 3a): làm một mình hay bài nhóm cùng các bạn nào; bạn được khai nhận thông báo và
- * bấm được "Không phải em"; một bài nộp một câu khai; gợi ý điền sẵn theo bài của bạn đã nộp có khai mình.
+ * Câu khai của một bài nộp (TL54 mục 2, 3, 3a): làm một mình hay bài nhóm cùng các bạn nào; bạn được khai bấm được "Không
+ * phải em"; một bài nộp một câu khai; gợi ý điền sẵn theo bài của bạn đã nộp có khai mình. Thông báo ở thongbao, chữ cho bảng
+ * chấm ở tomtat (0.2 tách — TL60 mục 5.8).
  *
  * @package    local_fitnhom
  * @copyright  2026 Khoa Công nghệ Thông tin, Trường Đại học Khoa học Tự nhiên, ĐHQG-HCM
@@ -166,52 +167,14 @@ class khai {
         }
         $DB->delete_records('local_fitnhom_cho', ['submissionid' => $sub->id]);
         $tx->allow_commit();
+        cho::xoa_dem((int) $sub->userid);
         $ctx = \context_module::instance($cm->id);
         event\khai_luu::create(['context' => $ctx, 'objectid' => $khaiid, 'relateduserid' => (int) $sub->userid,
             'other' => ['loai' => $loai, 'soban' => count($ban), 'nguon' => $nguon]])->trigger();
         foreach ($moi as $uid) {
-            self::bao_duoc_khai($khaiid, $uid, $assign, $cm, (int) $sub->userid);
+            thongbao::duoc_khai($khaiid, $uid, $assign, $cm, (int) $sub->userid);
         }
         return self::cua_bai_nop((int) $sub->id);
-    }
-
-    /**
-     * Thông báo cho một bạn vừa được khai (TL54 mục 3).
-     *
-     * @param int $khaiid Câu khai.
-     * @param int $uid Bạn được khai.
-     * @param \stdClass $assign Bài tập.
-     * @param \stdClass $cm Course module.
-     * @param int $nguoinop Người nộp.
-     * @return void
-     */
-    private static function bao_duoc_khai(int $khaiid, int $uid, \stdClass $assign, \stdClass $cm, int $nguoinop): void {
-        global $DB;
-        $tvid = (int) $DB->get_field('local_fitnhom_tv', 'id', ['khaiid' => $khaiid, 'userid' => $uid]);
-        $nop = \core_user::get_user($nguoinop);
-        $nhan = \core_user::get_user($uid);
-        if (!$nop || !$nhan || !$tvid) {
-            return;
-        }
-        $mon = format_string((string) $DB->get_field('course', 'fullname', ['id' => $assign->course]));
-        $a = (object) ['ban' => fullname($nop), 'bai' => format_string($assign->name), 'mon' => $mon,
-            'url' => (new \moodle_url('/local/fitnhom/tuchoi.php', ['id' => $tvid]))->out(false),
-            'urlbai' => (new \moodle_url('/mod/assign/view.php', ['id' => $cm->id]))->out(false)];
-        $m = new \core\message\message();
-        $m->component = 'local_fitnhom';
-        $m->name = 'duockhai';
-        $m->userfrom = \core_user::get_noreply_user();
-        $m->userto = $nhan;
-        $m->courseid = (int) $assign->course;
-        $m->subject = get_string('tb_duockhai_tieude', 'local_fitnhom', $a);
-        $m->fullmessage = get_string('tb_duockhai', 'local_fitnhom', $a);
-        $m->fullmessageformat = FORMAT_PLAIN;
-        $m->fullmessagehtml = get_string('tb_duockhai_html', 'local_fitnhom', $a);
-        $m->smallmessage = get_string('tb_duockhai_ngan', 'local_fitnhom', $a);
-        $m->notification = 1;
-        $m->contexturl = $a->url;
-        $m->contexturlname = get_string('khongphaiem', 'local_fitnhom');
-        message_send($m);
     }
 
     /**
@@ -314,75 +277,17 @@ class khai {
         if ($hoantac) {
             return;
         }
-        $nop = \core_user::get_user((int) $k->userid);
-        $ban = \core_user::get_user($userid);
-        if (!$nop || !$ban) {
-            return;
-        }
-        $a = (object) ['ban' => fullname($ban), 'bai' => format_string($assign->name),
-            'url' => (new \moodle_url('/mod/assign/view.php', ['id' => $cm->id]))->out(false)];
-        $m = new \core\message\message();
-        $m->component = 'local_fitnhom';
-        $m->name = 'tuchoi';
-        $m->userfrom = \core_user::get_noreply_user();
-        $m->userto = $nop;
-        $m->courseid = (int) $assign->course;
-        $m->subject = get_string('tb_tuchoi_tieude', 'local_fitnhom', $a);
-        $m->fullmessage = get_string('tb_tuchoi', 'local_fitnhom', $a);
-        $m->fullmessageformat = FORMAT_PLAIN;
-        $m->fullmessagehtml = '<p>' . s($m->fullmessage) . '</p>';
-        $m->smallmessage = $m->subject;
-        $m->notification = 1;
-        $m->contexturl = $a->url;
-        $m->contexturlname = format_string($assign->name);
-        message_send($m);
+        thongbao::tu_choi($k, $userid, $assign, $cm);
     }
 
     /**
-     * Tóm tắt câu khai cho bảng chấm / trang trạng thái bài nộp (HTML): Một mình / tên các bạn (bạn từ chối gạch ngang) /
-     * "Cùng nhóm với bài nộp của …".
+     * Tóm tắt câu khai cho bảng chấm — chuyển tiếp sang tomtat::cua_bai_nop() (0.2 tách tệp, TL60 mục 5.8; giữ cho bài kiểm cũ).
      *
      * @param \stdClass $sub Bài nộp.
      * @return string
      */
     public static function tom_tat(\stdClass $sub): string {
-        $k = self::cua_bai_nop((int) $sub->id);
-        if (!$k) {
-            // Em chưa tự khai: có trong bài nhóm của bạn khác thì ghi; bài chưa gửi thì để trống.
-            $g = !empty($sub->assignment) && !empty($sub->userid) ? self::goi_y((int) $sub->assignment, (int) $sub->userid) : null;
-            if ($g && ($u = \core_user::get_user($g['nguoinop']))) {
-                return get_string('cotrongnhom', 'local_fitnhom', s(fullname($u)) . ' ('
-                    . userdate($g['luc'], get_string('strftimedatetimeshort', 'langconfig')) . ')');
-            }
-            return ($sub->status ?? '') === 'submitted'
-                ? \html_writer::span(get_string('chuakhai', 'local_fitnhom'), 'text-muted') : '';
-        }
-        if ($k->loai === self::MOT) {
-            $chu = get_string('motminh', 'local_fitnhom');
-        } else {
-            $ten = [];
-            foreach ($k->tv as $uid => $t) {
-                $u = \core_user::get_user($uid);
-                if (!$u) {
-                    continue;
-                }
-                $ten[] = $t->trangthai === self::TUCHOI
-                    ? \html_writer::tag('del', s(self::nhan($u)), ['title' => get_string('dakhongphai', 'local_fitnhom')])
-                    : s(self::nhan($u));
-            }
-            $chu = get_string('nhomvoi', 'local_fitnhom') . ' ' . implode(', ', $ten);
-        }
-        $cung = [];
-        foreach (self::cung_nhom($k) as $c) {
-            $u = \core_user::get_user($c['userid']);
-            if ($u) {
-                $cung[] = s(fullname($u)) . ' (' . userdate($c['luc'], get_string('strftimedatetimeshort', 'langconfig')) . ')';
-            }
-        }
-        if ($cung) {
-            $chu .= \html_writer::div(get_string('cungnhomvoi', 'local_fitnhom', implode(', ', $cung)), 'small text-muted');
-        }
-        return $chu;
+        return tomtat::cua_bai_nop($sub);
     }
 
     /**
@@ -421,6 +326,9 @@ class khai {
             $DB->delete_records('local_fitnhom_tv', ['khaiid' => $id]);
         }
         $DB->delete_records('local_fitnhom_khai', ['submissionid' => $submissionid]);
+        foreach ($DB->get_fieldset_select('local_fitnhom_cho', 'userid', 'submissionid = ?', [$submissionid]) as $u) {
+            cho::xoa_dem((int) $u);
+        }
         $DB->delete_records('local_fitnhom_cho', ['submissionid' => $submissionid]);
     }
 
@@ -435,6 +343,7 @@ class khai {
         $DB->delete_records('local_fitnhom_tv', ['assignid' => $assignid]);
         $DB->delete_records('local_fitnhom_khai', ['assignid' => $assignid]);
         $DB->delete_records('local_fitnhom_cho', ['assignid' => $assignid]);
+        cho::xoa_dem();
     }
 
     /**

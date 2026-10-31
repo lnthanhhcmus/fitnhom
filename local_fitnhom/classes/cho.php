@@ -50,19 +50,66 @@ class cho {
         }
         $DB->insert_record('local_fitnhom_cho', (object) ['submissionid' => $s->id, 'assignid' => $a->id,
             'courseid' => $a->course, 'userid' => $s->userid, 'timecreated' => $luc]);
+        self::xoa_dem((int) $s->userid);
         return true;
     }
 
     /**
-     * Quét ngay (trang quản trị): bài nộp đã gửi từ lúc bật, chưa có câu khai, chưa chờ, ở course áp dụng.
+     * Người có dòng chờ khai không (TL60 mục 5.5) — kiểm nhanh đầu mỗi trang: bộ đệm MUC theo người, hụt thì một truy vấn theo
+     * chỉ mục userid_ix (không join). Có dòng chờ chưa chắc còn bài để hỏi (course có thể vừa bị loại trừ) — cua() lọc tiếp.
+     *
+     * @param int $userid Người.
+     * @return bool
+     */
+    public static function co_cho(int $userid): bool {
+        global $DB;
+        $dem = \cache::make('local_fitnhom', 'cho');
+        $v = $dem->get($userid);
+        if ($v === false) {
+            $v = $DB->record_exists('local_fitnhom_cho', ['userid' => $userid]) ? 1 : 0;
+            $dem->set($userid, $v);
+        }
+        return (bool) $v;
+    }
+
+    /**
+     * Xóa bộ đệm co_cho() của một người (thêm / khai / xóa dòng chờ) hay của mọi người (0: xóa bài tập, đổi chế độ).
+     *
+     * @param int $userid Người; 0 = mọi người.
+     * @return void
+     */
+    public static function xoa_dem(int $userid = 0): void {
+        $dem = \cache::make('local_fitnhom', 'cho');
+        if ($userid > 0) {
+            $dem->delete($userid);
+        } else {
+            $dem->purge();
+        }
+    }
+
+    /**
+     * Quét ngay — giữ chữ ký 0.1 (trả số bài vừa thêm) cho bài kiểm cũ; trang Tình hình dùng quet_xem() (TL60 mục 13, 0.2).
      *
      * @param int $luc Lúc quét.
      * @param int $userid Người bấm.
      * @return int Số bài vừa đưa vào danh sách chờ.
      */
     public static function quet(int $luc, int $userid): int {
+        return self::quet_xem($luc, $userid)['them'];
+    }
+
+    /**
+     * Quét ngay (trang quản trị): bài nộp đã gửi từ lúc bật, chưa có câu khai, chưa chờ, ở course áp dụng. Ghi số bài đã xem
+     * và số bài thêm (quet_so_xem, quet_so_them — hiện ở Tình hình, TL60 mục 5.3).
+     *
+     * @param int $luc Lúc quét.
+     * @param int $userid Người bấm.
+     * @return array ['xem' => số bài nộp đã xét, 'them' => số bài vừa đưa vào danh sách chờ]
+     */
+    public static function quet_xem(int $luc, int $userid): array {
         global $DB;
         $so = 0;
+        $xem = 0;
         $batdau = phamvi::bat_dau();
         if (phamvi::che_do() !== phamvi::TAT && $batdau) {
             $rs = $DB->get_recordset_sql(
@@ -76,6 +123,7 @@ class cho {
                 ['bd' => $batdau]
             );
             foreach ($rs as $r) {
+                $xem++;
                 if (phamvi::course_ap_dung((int) $r->course) && self::them((int) $r->id, $luc)) {
                     $so++;
                 }
@@ -83,9 +131,11 @@ class cho {
             $rs->close();
         }
         set_config('quetluc', $luc, 'local_fitnhom');
+        set_config('quet_so_xem', $xem, 'local_fitnhom');
+        set_config('quet_so_them', $so, 'local_fitnhom');
         event\quet_ngay::create(['context' => \context_system::instance(), 'userid' => $userid,
-            'other' => ['so' => $so]])->trigger();
-        return $so;
+            'other' => ['so' => $so, 'soxem' => $xem]])->trigger();
+        return ['xem' => $xem, 'them' => $so];
     }
 
     /**

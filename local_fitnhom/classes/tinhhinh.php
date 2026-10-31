@@ -33,6 +33,8 @@ class tinhhinh {
         global $DB;
         $bd = phamvi::bat_dau();
         $kq = ['chedo' => phamvi::che_do(), 'batdau' => $bd, 'quetluc' => (int) get_config('local_fitnhom', 'quetluc'),
+            'quetxem' => (int) get_config('local_fitnhom', 'quet_so_xem'),
+            'quetthem' => (int) get_config('local_fitnhom', 'quet_so_them'),
             'bainop' => 0, 'mot' => 0, 'nhom' => 0, 'ban' => 0, 'tuchoi' => 0, 'cho' => 0, 'khoathu' => [],
             'subplugin' => \core_plugin_manager::instance()->get_plugin_info('assignsubmission_fitnhom') !== null
                 && !get_config('assignsubmission_fitnhom', 'disabled')];
