@@ -18,3 +18,10 @@
 - Viết **TL59** (kho `fit-cnl`): FIT-CNL 1.8.0 đọc Fit-Nhóm — bốn điều kiện, lớp `dichvu\hoatdong\nopchung`, hai cột `hd_baitap.nguon` / `nguoinop`, sửa `sap_toi`, quy tắc hiện tên người nộp, cấu hình `hd_fitnhom_bat`, `ban180_test`, câu mở phiên.
 - **TL54 v0.4**: mục 6 thêm `api::cua_nguoi()`, `api::ap_dung()` (HOPDONG giữ 1); mục 9 cập nhật tình trạng; mục 10 bản 0.2 (trang giảng viên trong course, loại course theo `format = fitcnl`, tình hình theo course + dấu hiệu bất thường, giao dịch cho `khai::luu`); mục 11 khung bản 0.3 (ứng dụng điện thoại); mục 12 câu mở phiên. v0.3 vào `docs/ban-cu/`. README, sổ tay mục 7, lịch sử.
 - Chưa làm mã. Bản Word TL54 v0.4 chép lên Drive `Fit-Nhom\Thiet-ke\` (v0.1 → v0.3 vào `Thiet-ke\Ban-cu\` theo kịch bản dọn `Xay-lai-1.0\Don-dep\Don-dep_1.7.80`).
+
+## 31/10/2026 tối — Rà soát kho, tái cấu trúc, thiết kế đợt 1.8 (TL60; phiên Fable)
+
+- Chủ dự án (21:16): "kiểm tra lại thư mục Fit-Nhom, tái cấu trúc và viết bản thiết kế lại cho 1.8 … tôi sẽ mở session mới để dùng mô hình Opus để viết code".
+- Rà kho: `dev/sync.sh` + `dev/test.sh` 14 bài đạt, `dev/lint.sh` sạch, chuỗi vi / en khớp. Phát hiện R1–R12 ghi ở TL60 mục 3 (hộp nổi join ở mọi trang; chưa `upgrade.php`; privacy chưa xuất `cho`; `khai.php` bốn việc; TL54 v0.4 10.4 "giao dịch" thừa vì 0.1 đã có; Thử nghiệm nhận textarea mã rút gọn). Không lỗi an toàn.
+- Tái cấu trúc: bỏ tệp rỗng `readme` ở gốc; thêm `dev/README.md`, `docs/ban-cu/README.md`; TL54 lên **v0.5** (mục 10–12 bỏ, mục 6 chỉ còn hợp đồng rút gọn trỏ TL60 mục 4; sửa chữ theo rà soát), v0.4 vào `docs/ban-cu/`; README, CLAUDE.md, sổ tay (mục 3 bố cục kho, 5, 6, 7), lịch sử trỏ TL60.
+- Viết **TL60 v1.0** — một tài liệu cho cả đợt 1.8 (bản gốc `fit-cnl/docs/1.0/`, bản chép ở đây): quyết định D1–D9, Q8–Q9 chờ chủ dự án (có mặc định), rà soát 0.1, hợp đồng H1–H8 + ma trận ai được làm gì, đặc tả 0.2 (mục 5) và 1.8.0 (mục 6), thứ tự ba bước, kiểm chéo 12 tình huống, cài thật / lùi, rủi ro, câu mở phiên Opus, sổ điều chỉnh. TL59 (kho `fit-cnl`) bị TL60 thay. Drive `Fit-Nhom\Thiet-ke\`: TL60 + TL54 v0.5 (Word); chủ dự án tự xóa TL54 v0.4 docx và `Ban-cu\`.
