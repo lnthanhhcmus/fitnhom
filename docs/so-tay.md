@@ -1,6 +1,6 @@
 # Sổ tay Fit-Nhóm — đọc 5 phút nhớ lại tất cả
 
-Cập nhật: 31/10/2026 tối — **bản 0.1** (version 2026102700), chờ chủ dự án cài thử; kho rà soát 31/10 (14 bài PHPUnit đạt, lint sạch, TL60 mục 3). Thiết kế sản phẩm **TL54 v0.5**; **đợt 1.8** (Fit-Nhóm 0.2 + FIT-CNL 1.8.0) ở **TL60 v1.0** (`docs/TL60_…md`, bản chép của `fit-cnl/docs/1.0/` — đổi thì đổi cả hai, ghi mục 13). TL59 (kho `fit-cnl`) đã bị TL60 thay.
+Cập nhật: 31/10/2026 tối — **bản 0.1** (version 2026102700), chờ chủ dự án cài thử; kho rà soát 31/10 (14 bài PHPUnit đạt, lint sạch, TL60 mục 3). Thiết kế sản phẩm **TL54 v0.5**; **đợt 1.8** (Fit-Nhóm 0.2 + FIT-CNL 1.8.0) ở **TL60 v1.1** (`docs/TL60_…md`, bản chép của `fit-cnl/docs/1.0/` — đổi thì đổi cả hai, ghi mục 13). TL59 (kho `fit-cnl`) đã bị TL60 thay.
 
 ## 1. Tình trạng
 - Kho `lnthanhhcmus/fitnhom`. Thư mục Drive: `Thiết kế hệ thống hỗ trợ CNL\Fit-Nhom\` (Thiet-ke, Cai-dat, Anh, Huong-dan).

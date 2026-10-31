@@ -1,6 +1,6 @@
 # TL54 — Fit-Nhóm: khai thành viên nhóm khi nộp bài trên Moodle (thiết kế v0.5)
 
-*v0.5 · 31/10/2026 — **thiết kế sản phẩm** Fit-Nhóm (vì sao có, Q1–Q7, cách dùng, hợp đồng). Mọi điều về **đợt 1.8** (Fit-Nhóm 0.2 + FIT-CNL 1.8.0 — đặc tả, thứ tự làm, kiểm chéo, câu mở phiên, sổ điều chỉnh) chuyển sang **TL60** `docs/TL60_Thiet-ke-dot-1.8_Fit-Nhom-0.2-va-FIT-CNL-1.8.0_v1.0.md` (bản gốc ở kho `fit-cnl/docs/1.0/`, kho này giữ bản chép cùng phiên bản) — mục 10–12 của v0.4 bỏ, mục 6 chỉ còn hợp đồng. Sửa theo rà soát 0.1 (TL60 mục 3): danh sách course thử là ô nhiều dòng mã rút gọn (không phải ô gõ-chọn); `khai::luu` đã có giao dịch từ 0.1. Bản v0.4 ở `docs/ban-cu/`.*
+*v0.5 · 31/10/2026 — **thiết kế sản phẩm** Fit-Nhóm (vì sao có, Q1–Q7, cách dùng, hợp đồng). Mọi điều về **đợt 1.8** (Fit-Nhóm 0.2 + FIT-CNL 1.8.0 — đặc tả, thứ tự làm, kiểm chéo, câu mở phiên, sổ điều chỉnh) chuyển sang **TL60** `docs/TL60_Thiet-ke-dot-1.8_Fit-Nhom-0.2-va-FIT-CNL-1.8.0_v1.1.md` (bản gốc ở kho `fit-cnl/docs/1.0/`, kho này giữ bản chép cùng phiên bản) — mục 10–12 của v0.4 bỏ, mục 6 chỉ còn hợp đồng. Sửa theo rà soát 0.1 (TL60 mục 3): danh sách course thử là ô nhiều dòng mã rút gọn (không phải ô gõ-chọn); `khai::luu` đã có giao dịch từ 0.1. Bản v0.4 ở `docs/ban-cu/`.*
 
 *v0.4 · 31/10/2026 — bổ sung thiết kế 0.2 (nay ở TL60). v0.3 · 26/10/2026 22:12 — chủ dự án chọn hướng (A): bỏ khai bổ sung bài cũ (thư nhắc, tác vụ đêm, *Gửi nhắc ngay*); giữ hộp nổi nhẹ; Quét ngay chỉ quét bài nộp từ lúc bật. v0.2 · 26/10/2026 — thêm mục 3a (hai bạn cùng nhóm đều nộp). v0.1 · 26/10/2026.*
 

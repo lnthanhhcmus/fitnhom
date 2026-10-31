@@ -12,7 +12,7 @@ Giảng viên không phải làm gì; tải bài về chấm, sổ điểm khôn
 | `assignsubmission_fitnhom` | `mod/assign/submission/fitnhom` |
 
 - Thiết kế sản phẩm: [`docs/TL54_Fit-Nhom_Thiet-ke_v0.5.md`](docs/TL54_Fit-Nhom_Thiet-ke_v0.5.md) — vì sao có, Q1–Q7, cách dùng, hợp đồng (bản cũ ở `docs/ban-cu/`).
-- **Đợt 1.8** (Fit-Nhóm 0.2 + FIT-CNL 1.8.0 — chưa viết mã): [`docs/TL60_Thiet-ke-dot-1.8_Fit-Nhom-0.2-va-FIT-CNL-1.8.0_v1.0.md`](docs/TL60_Thiet-ke-dot-1.8_Fit-Nhom-0.2-va-FIT-CNL-1.8.0_v1.0.md) — bản chép của `fit-cnl/docs/1.0/`; mục 12 câu mở phiên, mục 13 sổ điều chỉnh.
+- **Đợt 1.8** (Fit-Nhóm 0.2 + FIT-CNL 1.8.0 — chưa viết mã): [`docs/TL60_Thiet-ke-dot-1.8_Fit-Nhom-0.2-va-FIT-CNL-1.8.0_v1.1.md`](docs/TL60_Thiet-ke-dot-1.8_Fit-Nhom-0.2-va-FIT-CNL-1.8.0_v1.1.md) — bản chép của `fit-cnl/docs/1.0/`; mục 12 câu mở phiên, mục 13 sổ điều chỉnh.
 - Sổ tay dự án (bản đồ mã, lệnh, quyết định): [`docs/so-tay.md`](docs/so-tay.md); nhật ký [`docs/nhat-ky.md`](docs/nhat-ky.md); lịch sử bản [`docs/lich-su.md`](docs/lich-su.md).
 - Cài đặt và đi thử: [`docs/huong-dan/`](docs/huong-dan/).
 
