@@ -10,7 +10,7 @@ Fit-Nhóm: hai plugin Moodle 4.5 — `local_fitnhom` (chính) và `assignsubmiss
 ## Bắt buộc
 - **Giữ hợp đồng API** (TL60 mục 4, bảo đảm H1–H8): trong cùng `api::HOPDONG` không đổi ý nghĩa `dang_bat()`, `thanhvien()`; đổi thì thêm hàm hay tăng `HOPDONG` và ghi vào TL60 mục 13 + sổ tay; bài kiểm `tests/hopdong_test.php` phải đạt.
 - Tài liệu dài hạn đổi phiên bản thì bản trước vào `docs/ban-cu/` (tên có phiên bản); Drive không giữ bản cũ.
-- Không làm giảng viên thêm việc: không ô bật / tắt trong cài đặt bài tập; không đổi sổ điểm; *Tải toàn bộ bài nộp* chỉ thêm tệp ghi chú `Thanh-vien-nhom.txt` (0.2.1 — Q2 điều chỉnh 01/11/2026, TL54 mục 2), không đụng tệp em nộp.
+- Không làm giảng viên thêm việc: không ô bật / tắt trong cài đặt bài tập; không đổi sổ điểm; *Tải toàn bộ bài nộp* **không đổi** — không thêm tệp nào (Q2; tệp ghi chú `Thanh-vien-nhom.txt` của 0.2.1–0.2.5 đã bỏ ở 0.2.6 theo chủ dự án 01/11/2026 16:43 — giảng viên chấm trong tệp em nộp), không đụng tệp em nộp.
 - Câu khai **không tính là bài nộp** (`is_empty` đúng).
 - Bảng có dữ liệu người khai ở `privacy/provider.php`; không ghi tên người được khai vào mô tả nhật ký.
 - Hàm chạy từ tác vụ nhận mốc thời gian, không gọi `time()` trực tiếp.

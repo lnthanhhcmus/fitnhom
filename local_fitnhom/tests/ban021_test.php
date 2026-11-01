@@ -96,77 +96,9 @@ final class ban021_test extends \advanced_testcase {
         $this->assertStringNotContainsString($nhan, khai::ung_vien_kem($cmid, $aid, (int) $sv[1]->id)[(int) $sv[0]->id]);
     }
 
-    /**
-     * Tệp Thanh-vien-nhom.txt: có khi Moodle dựng gói *Tải toàn bộ bài nộp* (thư mục …_assignsubmission_fitnhom), ghi người
-     * nộp, các bạn (bạn báo không cùng làm ghi rõ), bài nộp khác cùng nhóm và bản mới nhất; cùng dữ liệu thì cùng nội dung.
-     * Không có khi gọi từ nơi khác (Chú thích PDF…), khi bài chưa có câu khai, khi chấm ẩn danh.
-     */
-    public function test_tep_ghi_chu(): void {
-        global $DB;
-        $this->resetAfterTest();
-        $this->che_do(phamvi::BAT);
-        [, $a, $sv, $gv] = $this->bai_tap(5);
-        $aid = (int) $a->get_instance()->id;
-        $this->nop($sv[0], $a, ['fitnhom_loai' => khai::NHOM, 'fitnhom_tv' => [$sv[1]->id, $sv[2]->id]]);
-        $this->nop($sv[1], $a, ['fitnhom_loai' => khai::NHOM, 'fitnhom_tv' => [$sv[0]->id]]);
-        $this->nop($sv[3], $a, ['fitnhom_loai' => khai::MOT]);
-        $this->nop($sv[4], $a);
-        $sa = $this->bai_nop($a, $sv[0]);
-        $sb = $this->bai_nop($a, $sv[1]);
-        $DB->set_field('assign_submission', 'timemodified', (int) $sa->timemodified + 3600, ['id' => $sb->id]);
-        $sink = $this->redirectMessages();
-        khai::tu_choi($this->tv_id((int) $sv[0]->id, (int) $sv[2]->id, $aid), (int) $sv[2]->id, false, time());
-        $sink->close();
-
-        $p = $a->get_submission_plugin_by_type('fitnhom');
-        $this->setUser($gv);
-        $this->assertSame([], $p->get_files($this->bai_nop($a, $sv[0]), $sv[0]), 'Không đặt exportfullpath (Chú thích PDF…)');
-
-        $tep = $this->tai_ve($a);
-        $ten = fn($u) => fullname($u);
-        $tepa = $this->tep_cua($tep, $sv[0]);
-        $this->assertNotNull($tepa, implode(' | ', array_keys($tep)));
-        $this->assertStringStartsWith("\xEF\xBB\xBF", $tepa);
-        $this->assertStringContainsString("\r\n", $tepa);
-        $this->assertStringContainsString($ten($sv[1]), $tepa);
-        $this->assertStringContainsString($ten($sv[2]) . ' (SV2302)' . get_string('ghichu_tuchoi', 'local_fitnhom'), $tepa);
-        $this->assertStringContainsString(get_string('ghichu_comoihon', 'local_fitnhom', $ten($sv[1]) . ' (SV2301)'), $tepa);
-        $tepb = $this->tep_cua($tep, $sv[1]);
-        $this->assertStringContainsString(get_string('ghichu_moinhat', 'local_fitnhom'), $tepb);
-        $this->assertStringContainsString(get_string('ghichu_mot', 'local_fitnhom'), $this->tep_cua($tep, $sv[3]));
-        $this->assertNull($this->tep_cua($tep, $sv[4]), 'Bài chưa có câu khai: không có tệp ghi chú');
-        $this->assertNull($this->tep_cua($tep, $sv[2]), 'Em không nộp: không có thư mục');
-        $this->assertSame($tep, $this->tai_ve($a), 'Cùng dữ liệu thì cùng nội dung');
-
-        // Chấm ẩn danh: không có tệp (tệp có tên các bạn).
-        [, $an, $sv2, $gv2] = $this->bai_tap(2, ['blindmarking' => 1]);
-        $this->nop($sv2[0], $an, ['fitnhom_loai' => khai::NHOM, 'fitnhom_tv' => [$sv2[1]->id]]);
-        $this->setUser($gv2);
-        $this->assertSame([], array_filter(array_keys($this->tai_ve($an)), fn($k) => str_contains($k, 'fitnhom')));
-    }
-
-    /**
-     * Giảng viên tải lên lại gói vừa tải về làm *gói phản hồi* (Upload multiple feedback files in a zip): tệp ghi chú không đổi
-     * thì Moodle không nhận là tệp phản hồi mới (so nội dung), sửa rồi thì nhận như mọi tệp khác.
-     */
-    public function test_goi_phan_hoi_khong_nhan_tep_ghi_chu(): void {
-        global $CFG;
-        require_once($CFG->dirroot . '/mod/assign/feedback/file/importziplib.php');
-        $this->resetAfterTest();
-        $this->che_do(phamvi::BAT);
-        [, $a, $sv, $gv] = $this->bai_tap(2);
-        $this->nop($sv[0], $a, ['fitnhom_loai' => khai::NHOM, 'fitnhom_tv' => [$sv[1]->id]]);
-        $this->setUser($gv);
-        $chu = tomtat::ghi_chu($this->bai_nop($a, $sv[0]), format_string($a->get_instance()->name));
-        $this->assertNotSame('', $chu);
-        $fs = get_file_storage();
-        $tep = fn($noidung, $ten) => $fs->create_file_from_string(['contextid' => \context_user::instance($gv->id)->id,
-            'component' => 'user', 'filearea' => 'draft', 'itemid' => 1, 'filepath' => '/', 'filename' => $ten], $noidung);
-        $p = $a->get_submission_plugin_by_type('fitnhom');
-        $nhap = new \assignfeedback_file_zip_importer();
-        $this->assertFalse($nhap->is_file_modified($a, $sv[0], $p, tomtat::TEP_GHICHU, $tep($chu, 'a.txt')));
-        $this->assertTrue($nhap->is_file_modified($a, $sv[0], $p, tomtat::TEP_GHICHU, $tep($chu . 'x', 'b.txt')));
-    }
+    // Hai bài test_tep_ghi_chu, test_goi_phan_hoi_khong_nhan_tep_ghi_chu (0.2.1) bỏ ở 0.2.6: chủ dự án bỏ tệp ghi chú khỏi
+    // *Tải toàn bộ bài nộp* (01/11/2026 16:43 — TL60 mục 13); ban026_test khẳng định gói tải không còn thư mục
+    // …_assignsubmission_fitnhom.
 
     /**
      * Thư cho bạn được liệt kê: người gửi FIT-MOODLE (đổi được ở Cài đặt; trống thì như Moodle), câu chào, "liệt kê" thay "khai",
@@ -253,40 +185,5 @@ final class ban021_test extends \advanced_testcase {
         global $DB;
         $kid = $DB->get_field('local_fitnhom_khai', 'id', ['assignid' => $aid, 'userid' => $nguoinop], MUST_EXIST);
         return (int) $DB->get_field('local_fitnhom_tv', 'id', ['khaiid' => $kid, 'userid' => $uid], MUST_EXIST);
-    }
-
-    /**
-     * Danh sách tệp mod_assign\downloader sẽ đưa vào gói *Tải toàn bộ bài nộp* (đường dẫn => nội dung chữ / tệp).
-     *
-     * @param \assign $a Bài tập.
-     * @return array
-     */
-    private function tai_ve(\assign $a): array {
-        $d = new \mod_assign\downloader($a);
-        $d->load_filelist();
-        $r = new \ReflectionProperty($d, 'filesforzipping');
-        $kq = [];
-        foreach ($r->getValue($d) as $duong => $f) {
-            $kq[$duong] = is_array($f) ? reset($f) : $f->get_contenthash();
-        }
-        ksort($kq);
-        return $kq;
-    }
-
-    /**
-     * Nội dung tệp ghi chú của một em trong gói tải (null nếu không có).
-     *
-     * @param array $tep tai_ve().
-     * @param \stdClass $u Em.
-     * @return string|null
-     */
-    private function tep_cua(array $tep, \stdClass $u): ?string {
-        foreach ($tep as $duong => $chu) {
-            $dau = clean_filename(str_replace('_', ' ', fullname($u))) . '_';
-            if (str_ends_with($duong, '_assignsubmission_fitnhom/' . tomtat::TEP_GHICHU) && str_starts_with($duong, $dau)) {
-                return $chu;
-            }
-        }
-        return null;
     }
 }

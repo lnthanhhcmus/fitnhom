@@ -446,6 +446,10 @@ class khai {
         // Chỉ hiện ô các bạn khi nút "Bài nhóm" được chọn. 0.1–0.2.3 dùng 'neq': Moodle bỏ qua nút chưa chọn nên lúc chưa
         // chọn nút nào ô vẫn hiện (0.2.4 — chủ dự án 01/11/2026 12:44, 15:11).
         $m->hideIf('fitnhom_tv', 'fitnhom_loai', 'notchecked', self::NHOM);
+        // Dòng nhắc ghi đủ thông tin nhóm vào bài nộp — giảng viên chấm trong tệp em nộp (0.2.6, chủ dự án 01/11/2026 16:43).
+        $nhac = \html_writer::span(get_string('nhac_ghidu', 'local_fitnhom'), 'text-muted small');
+        $m->addElement('static', 'fitnhom_nhac', '', $nhac);
+        $m->hideIf('fitnhom_nhac', 'fitnhom_loai', 'notchecked', self::NHOM);
     }
 
     /**

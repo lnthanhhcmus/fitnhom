@@ -55,6 +55,7 @@ final class ban024_test extends \advanced_testcase {
         $m = new \MoodleQuickForm('thu', 'post', '');
         khai::them_cau_hoi($m, [], '', true);
         $an = (new \ReflectionProperty($m, '_hideifs'))->getValue($m);
-        $this->assertSame(['notchecked' => [khai::NHOM => ['fitnhom_tv']]], $an['fitnhom_loai']);
+        // 0.2.6: dòng nhắc fitnhom_nhac cùng điều kiện (sửa dòng này — TL60 mục 13, 01/11/2026 17:30).
+        $this->assertSame(['notchecked' => [khai::NHOM => ['fitnhom_tv', 'fitnhom_nhac']]], $an['fitnhom_loai']);
     }
 }
