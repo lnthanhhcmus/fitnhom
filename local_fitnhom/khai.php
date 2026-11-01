@@ -78,8 +78,10 @@ if ($id) {
     $PAGE->set_url($trang, ['id' => $id]);
     $k = khai::cua_bai_nop((int) $s->id);
     $g = $k ? null : khai::goi_y((int) $a->id, (int) $USER->id);
-    $form = new \local_fitnhom\form\khai_form($PAGE->url, ['ungvien' => khai::ung_vien((int) $cm->id, (int) $USER->id),
-        'goiy' => khai::chu_goi_y($g)]);
+    $form = new \local_fitnhom\form\khai_form($PAGE->url, [
+        'ungvien' => khai::ung_vien_kem((int) $cm->id, (int) $a->id, (int) $USER->id),
+        'goiy' => khai::chu_goi_y($g),
+    ]);
     $mac = ['id' => $s->id, 've' => $ve, 'fitnhom_loai' => khai::NHOM, 'fitnhom_tv' => $g ? $g['ban'] : []];
     if ($k) {
         $mac['fitnhom_loai'] = $k->loai;

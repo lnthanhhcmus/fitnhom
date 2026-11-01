@@ -90,6 +90,13 @@ if ($hassiteconfig) {
             PARAM_INT
         ));
         $s->add(new admin_setting_configtext(
+            'local_fitnhom/nguoigui',
+            new lang_string('caidat_nguoigui', 'local_fitnhom'),
+            new lang_string('caidat_nguoigui_mota', 'local_fitnhom'),
+            'FIT-MOODLE',
+            PARAM_TEXT
+        ));
+        $s->add(new admin_setting_configtext(
             'local_fitnhom/batthuong_tuchoi',
             new lang_string('caidat_batthuong_tuchoi', 'local_fitnhom'),
             new lang_string('caidat_batthuong_tuchoi_mota', 'local_fitnhom'),

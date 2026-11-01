@@ -15,10 +15,11 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Câu hỏi "Bài này em làm thế nào?" trên trang nộp bài (TL54 mục 2). Dữ liệu, chế độ, phạm vi ở local_fitnhom.
+ * Câu hỏi "Thành viên nhóm" trên trang nộp bài (TL54 mục 2). Dữ liệu, chế độ, phạm vi ở local_fitnhom.
  *
  * Không cấu hình được (giảng viên không có ô bật / tắt — chủ dự án Q2); bật hay không theo local_fitnhom\phamvi. Câu khai
- * không tính là bài nộp (is_empty luôn đúng); không có tệp (Tải toàn bộ bài nộp không đổi).
+ * không tính là bài nộp (is_empty luôn đúng). Từ 0.2.1 *Tải toàn bộ bài nộp* có thêm tệp ghi chú Thanh-vien-nhom.txt cho bài
+ * nộp có câu khai (chủ dự án 01/11/2026 — get_files()); không có vùng tệp, không đụng tệp em nộp.
  *
  * @package    assignsubmission_fitnhom
  * @copyright  2026 Khoa Công nghệ Thông tin, Trường Đại học Khoa học Tự nhiên, ĐHQG-HCM
@@ -97,7 +98,7 @@ class assign_submission_fitnhom extends assign_submission_plugin {
         $g = $k ? null : \local_fitnhom\khai::goi_y((int) $this->assignment->get_instance()->id, $userid);
         \local_fitnhom\khai::them_cau_hoi(
             $mform,
-            \local_fitnhom\khai::ung_vien((int) $cm->id, $userid),
+            \local_fitnhom\khai::ung_vien_kem((int) $cm->id, (int) $this->assignment->get_instance()->id, $userid),
             \local_fitnhom\khai::chu_goi_y($g),
             $userid === (int) $USER->id
         );
@@ -225,6 +226,52 @@ class assign_submission_fitnhom extends assign_submission_plugin {
             \local_fitnhom\khai::xoa_bai_tap((int) $this->assignment->get_instance()->id);
         }
         return true;
+    }
+
+    /**
+     * Tệp ghi chú Thanh-vien-nhom.txt trong *Tải toàn bộ bài nộp* (0.2.1, chủ dự án 01/11/2026 — trước đó Q2 / TL54 mục 2 giữ
+     * gói tải không đổi). Chỉ đưa ra khi:
+     * - Moodle đang dựng gói tải (mod_assign\downloader đặt $submission->exportfullpath trước khi gọi), hay đang so tệp khi
+     *   giảng viên tải lên gói phản hồi (assignfeedback_file_zip_importer — cùng nội dung thì không bị nhận là tệp phản hồi mới);
+     * - KHÔNG cho Chú thích PDF (assignfeedback_editpdf gọi hàm này và đổi mọi tệp thành trang PDF để chấm), sao chép vào
+     *   nhận xét, privacy;
+     * - bài tập không chấm ẩn danh (blind marking — tệp có tên các bạn) và bài nộp có câu khai.
+     *
+     * @param stdClass $submission Bài nộp.
+     * @param stdClass $user Người nộp.
+     * @return array tên tệp => [nội dung]
+     */
+    public function get_files(stdClass $submission, stdClass $user) {
+        if (!self::co_loi() || !class_exists('\\local_fitnhom\\tomtat') || !self::goi_tu_tai_ve($submission)) {
+            return [];
+        }
+        try {
+            if ($this->assignment->is_blind_marking()) {
+                return [];
+            }
+            $chu = \local_fitnhom\tomtat::ghi_chu($submission, format_string($this->assignment->get_instance()->name));
+        } catch (\Throwable $e) {
+            return [];
+        }
+        return $chu === '' ? [] : [\local_fitnhom\tomtat::TEP_GHICHU => [$chu]];
+    }
+
+    /**
+     * Có phải đang dựng gói *Tải toàn bộ bài nộp* (hay so gói phản hồi tải lên) không.
+     *
+     * @param stdClass $submission Bài nộp.
+     * @return bool
+     */
+    private static function goi_tu_tai_ve(stdClass $submission): bool {
+        if (property_exists($submission, 'exportfullpath')) {
+            return true;
+        }
+        foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 4) as $f) {
+            if (($f['class'] ?? '') === 'assignfeedback_file_zip_importer') {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

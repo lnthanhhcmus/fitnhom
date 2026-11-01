@@ -86,6 +86,52 @@ class khai {
     }
 
     /**
+     * Như ung_vien(), thêm sau tên những bạn **đã nộp bài này có liệt kê mình** "· đã nộp lúc …, có tên em trong nhóm"
+     * (góp ý 01/11/2026, chủ dự án chọn "chỉ bạn đã liệt kê em"). Bạn đã nộp mà không liệt kê mình thì không ghi gì —
+     * Moodle không cho sinh viên biết bạn khác đã nộp chưa; ghi cho mọi bạn thì chọn lần lượt cả lớp là dò được.
+     *
+     * @param int $cmid Course module của bài tập.
+     * @param int $assignid Bài tập.
+     * @param int $tru Người nộp (bỏ khỏi danh sách).
+     * @return array userid => nhãn
+     */
+    public static function ung_vien_kem(int $cmid, int $assignid, int $tru): array {
+        $kq = self::ung_vien($cmid, $tru);
+        foreach (self::ban_da_nop_co_em($assignid, $tru) as $uid => $luc) {
+            if (isset($kq[$uid])) {
+                $gio = userdate($luc, get_string('strftimedatetimeshort', 'langconfig'));
+                $kq[$uid] .= ' · ' . get_string('ungvien_danop', 'local_fitnhom', $gio);
+            }
+        }
+        return $kq;
+    }
+
+    /**
+     * Các bạn đã nộp bài này (bài nộp mới nhất, đã gửi) có liệt kê mình và mình chưa bấm "Không phải em".
+     *
+     * @param int $assignid Bài tập.
+     * @param int $userid Mình.
+     * @return array người nộp => lúc nộp (assign_submission.timemodified)
+     */
+    public static function ban_da_nop_co_em(int $assignid, int $userid): array {
+        global $DB;
+        $ds = $DB->get_records_sql(
+            "SELECT k.id, k.userid, s.timemodified
+               FROM {local_fitnhom_tv} t
+               JOIN {local_fitnhom_khai} k ON k.id = t.khaiid
+               JOIN {assign_submission} s ON s.id = k.submissionid
+              WHERE t.assignid = :a AND t.userid = :u AND t.trangthai = :kh AND k.userid <> :u2
+                    AND s.latest = 1 AND s.status = :st",
+            ['a' => $assignid, 'u' => $userid, 'kh' => self::KHAI, 'u2' => $userid, 'st' => 'submitted']
+        );
+        $kq = [];
+        foreach ($ds as $o) {
+            $kq[(int) $o->userid] = max($kq[(int) $o->userid] ?? 0, (int) $o->timemodified);
+        }
+        return $kq;
+    }
+
+    /**
      * Câu khai của một bài nộp kèm các bạn (khóa userid).
      *
      * @param int $submissionid Bài nộp.
@@ -347,7 +393,8 @@ class khai {
     }
 
     /**
-     * Câu hỏi "Bài này em làm thế nào?" — dùng chung cho trang nộp bài (assignsubmission_fitnhom) và trang khai của Fit-Nhóm.
+     * Câu hỏi "Thành viên nhóm" (0.1–0.2: "Bài này em làm thế nào?") — dùng chung cho trang nộp bài
+     * (assignsubmission_fitnhom) và trang khai của Fit-Nhóm.
      *
      * @param \MoodleQuickForm $m Biểu mẫu.
      * @param array $ungvien userid => "MSSV – Họ tên".
@@ -365,8 +412,12 @@ class khai {
         if ($goiy !== '') {
             $m->addElement('static', 'fitnhom_goiy', '', \html_writer::div($goiy, 'alert alert-info mb-0'));
         }
-        $m->addElement('radio', 'fitnhom_loai', '', get_string('chon_mot', 'local_fitnhom'), self::MOT);
-        $m->addElement('radio', 'fitnhom_loai', '', get_string('chon_nhom', 'local_fitnhom'), self::NHOM);
+        // Hai nút trong một nhóm cùng tên (appendName = false): khung nhóm có chỗ hiện dòng báo đỏ của luật bắt buộc —
+        // hai nút rời thì Moodle không có chỗ hiện, em bấm Lưu không thấy gì (góp ý 01/11/2026).
+        $m->addGroup([
+            $m->createElement('radio', 'fitnhom_loai', '', get_string('chon_mot', 'local_fitnhom'), self::MOT),
+            $m->createElement('radio', 'fitnhom_loai', '', get_string('chon_nhom', 'local_fitnhom'), self::NHOM),
+        ], 'fitnhom_loai', '', \html_writer::empty_tag('br'), false);
         $m->setType('fitnhom_loai', PARAM_ALPHA);
         if ($batbuoc) {
             $m->addRule('fitnhom_loai', get_string('loi_chuachon', 'local_fitnhom'), 'required', null, 'client');

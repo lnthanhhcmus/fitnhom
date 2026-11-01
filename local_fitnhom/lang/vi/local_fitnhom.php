@@ -34,15 +34,17 @@ $string['caidat_batthuong_tuchoi'] = 'Cần xem — số lần "Không phải em
 $string['caidat_batthuong_tuchoi_mota'] = 'Khối Cần xem ở trang Tình hình liệt kê người nộp bị các bạn bấm "Không phải em" ít nhất chừng này lần trong 60 ngày (dấu hiệu khai bừa). Mặc định 3. Fit-Nhóm không tự làm gì với các dòng này.';
 $string['caidat_loaitru_format'] = 'Course không áp dụng — định dạng course';
 $string['caidat_loaitru_format_mota'] = 'Mỗi dòng một định dạng course (course format). Course có định dạng này không hỏi. Mặc định fitcnl — course lớp chủ nhiệm của FIT-CNL, nhận diện được dù đổi tên.';
-$string['cauhoi'] = 'Bài này em làm thế nào?';
-$string['cauhoi_vi'] = 'Để các bạn cùng nhóm không bị tính là chưa nộp.';
+$string['caidat_nguoigui'] = 'Tên người gửi thông báo';
+$string['caidat_nguoigui_mota'] = 'Tên hiện ở ô "Người gửi" của thư và chuông thông báo Fit-Nhóm gửi sinh viên (mặc định FIT-MOODLE). Để trống thì dùng tên mặc định của Moodle ("Xin đừng trả lời về địa chỉ gửi thư này"). Phần "(qua …)" sau tên là cài đặt chung của Moodle: Quản trị trang › Máy chủ › Email › Email đi › Thông tin "qua".';
+$string['cauhoi'] = 'Thành viên nhóm';
+$string['cauhoi_vi'] = 'Bắt buộc chọn một. Bài nhóm: chọn các bạn cùng làm — các bạn được tính đã nộp, không phải nộp lại.';
 $string['chedo'] = 'Chế độ';
 $string['chedo_BAT'] = 'Bật toàn trang';
 $string['chedo_TAT'] = 'Tắt';
 $string['chedo_THU'] = 'Thử nghiệm — chỉ các course chọn';
 $string['chedo_help'] = 'Tắt: không hỏi gì. Thử nghiệm: chỉ hỏi ở các course trong danh sách thử. Bật toàn trang: hỏi ở mọi bài tập của mọi course, trừ course không áp dụng. Lần đầu chuyển khỏi Tắt được ghi làm lúc bật — bài nộp trước lúc đó không hỏi.';
 $string['chon_mot'] = 'Em làm một mình';
-$string['chon_nhom'] = 'Bài nhóm — chọn các bạn cùng làm';
+$string['chon_nhom'] = 'Bài nhóm — em nộp cho cả nhóm';
 $string['chuakhai'] = 'Chưa khai';
 $string['cot_bai'] = 'Bài tập';
 $string['cot_ban'] = 'Bạn được khai';
@@ -93,7 +95,18 @@ $string['ev_khai_luu'] = 'Lưu câu khai thành viên nhóm';
 $string['ev_quet_ngay'] = 'Quét ngay bài nộp chưa khai';
 $string['ev_thanhvien_tuchoi'] = 'Bạn được khai bấm "Không phải em"';
 $string['event_course_xem'] = 'Xem trang Thành viên nhóm của course';
-$string['goiy'] = 'Bạn {$a->ban} đã nộp bài này lúc {$a->luc} và khai em cùng nhóm — em không cần nộp lại. Nếu nộp bản cập nhật, chọn các bạn cùng nhóm bên dưới (đã điền sẵn theo bạn {$a->ban}).';
+$string['ghichu_bai'] = 'Bài tập: {$a}';
+$string['ghichu_comoihon'] = '→ Nhóm có bản nộp mới hơn: bài của {$a}.';
+$string['ghichu_cuoi'] = '(Ghi chú do Fit-Nhóm tạo khi tải bài nộp về; không phải tệp sinh viên nộp.)';
+$string['ghichu_khac'] = 'Các bài nộp khác cùng nhóm:';
+$string['ghichu_luc'] = '{$a->ten}, lúc {$a->luc}';
+$string['ghichu_moinhat'] = '→ Bài này là bản nộp mới nhất của nhóm.';
+$string['ghichu_mot'] = 'Em làm một mình.';
+$string['ghichu_nguoinop'] = 'Người nộp: {$a->ten}, lúc {$a->luc}';
+$string['ghichu_nhom'] = 'Bài nhóm, cùng làm với:';
+$string['ghichu_tieude'] = 'Fit-Nhóm — thành viên nhóm của bài nộp này';
+$string['ghichu_tuchoi'] = ' — bạn này báo không cùng làm';
+$string['goiy'] = 'Bạn {$a->ban} đã nộp bài này lúc {$a->luc} và có tên em trong nhóm — em không cần nộp lại. Nếu nộp bản cập nhật, chọn các bạn cùng nhóm bên dưới (đã điền sẵn theo bạn {$a->ban}).';
 $string['hoantac'] = 'Hoàn tác';
 $string['hopnoi_giaithich'] = 'Các bài dưới đây em đã nộp nhưng chưa cho biết làm một mình hay bài nhóm (thường do nộp bằng ứng dụng điện thoại). Khai để các bạn cùng nhóm không bị tính là chưa nộp.';
 $string['hopnoi_tieude'] = 'Em còn {$a} bài cần khai thành viên';
@@ -114,8 +127,8 @@ $string['loi_khongtronglop'] = 'Có bạn không thuộc danh sách nộp bài c
 $string['loi_quanhieu'] = 'Chỉ chọn tối đa {$a} bạn.';
 $string['loi_thamso'] = 'Dữ liệu khai không hợp lệ.';
 $string['luu'] = 'Lưu';
-$string['messageprovider:duockhai'] = 'Em được bạn khai cùng làm một bài nộp';
-$string['messageprovider:tuchoi'] = 'Bạn được khai báo "Không phải em"';
+$string['messageprovider:duockhai'] = 'Em được bạn liệt kê cùng làm một bài nộp';
+$string['messageprovider:tuchoi'] = 'Bạn được liệt kê báo không cùng làm';
 $string['motminh'] = 'Làm một mình';
 $string['motminh_nut'] = 'Em làm một mình';
 $string['mucdich'] = 'Nhiều bài tập / đồ án là bài nhóm nhưng chỉ một bạn nộp lên Moodle, nên Moodle (và các hệ đọc dữ liệu Moodle như FIT-CNL — theo dõi học tập cho chủ nhiệm lớp) coi các bạn còn lại là chưa nộp. Fit-Nhóm thêm vào trang nộp bài câu hỏi bắt buộc: <em>Em làm một mình</em> hay <em>Bài nhóm cùng các bạn…</em> (chọn từ danh sách). Các bạn được khai nhận thông báo và có thể bấm <em>Không phải em</em>. Giảng viên không phải làm gì; tải bài về chấm và sổ điểm không đổi; bảng chấm có thêm cột <em>Thành viên nhóm</em>. Thiết kế: TL54, kho github.com/lnthanhhcmus/fitnhom.';
@@ -149,11 +162,24 @@ $string['quetngay'] = 'Quét ngay';
 $string['quetngay_help'] = 'Tìm các bài nộp đã gửi từ lúc bật, ở course đang áp dụng, mà chưa có câu khai (nộp qua ứng dụng điện thoại, dịch vụ web, hay lúc plugin tạm tắt) và đưa vào hộp nổi của người nộp. Không gửi thư.';
 $string['sheet_chitiet'] = 'Chi tiết';
 $string['sheet_theobai'] = 'Theo bài';
-$string['tb_duockhai'] = 'Bạn {$a->ban} vừa nộp bài "{$a->bai}" (môn {$a->mon}) và khai em là thành viên cùng làm. Em không cần nộp lại. Nếu không đúng, mở {$a->url} và bấm "Không phải em".';
-$string['tb_duockhai_html'] = '<p>Bạn <strong>{$a->ban}</strong> vừa nộp bài <a href="{$a->urlbai}">{$a->bai}</a> (môn {$a->mon}) và khai em là thành viên cùng làm. Em không cần nộp lại.</p><p>Nếu không đúng: <a href="{$a->url}">Không phải em</a>.</p>';
-$string['tb_duockhai_ngan'] = '{$a->ban} khai em cùng làm "{$a->bai}".';
-$string['tb_duockhai_tieude'] = '{$a->ban} khai em cùng làm "{$a->bai}"';
-$string['tb_tuchoi'] = 'Bạn {$a->ban} bấm "Không phải em" ở bài "{$a->bai}" em đã nộp, nên không được tính là cùng nhóm. Nếu có nhầm lẫn, em sửa câu khai ở trang nộp bài: {$a->url}';
+$string['tb_baolai'] = 'Em không cùng làm bài này';
+$string['tb_duockhai'] = 'Chào em,
+
+Bạn {$a->ban} vừa nộp bài "{$a->bai}" (môn {$a->mon}) và liệt kê em là thành viên cùng làm. Em không cần nộp lại bài này.
+
+Nếu em không cùng làm bài này, em mở liên kết sau để báo lại: {$a->url}
+
+{$a->ky}';
+$string['tb_duockhai_html'] = '<p>Chào em,</p><p>Bạn <strong>{$a->ban}</strong> vừa nộp bài <a href="{$a->urlbai}">{$a->bai}</a> (môn {$a->mon}) và liệt kê em là thành viên cùng làm. Em không cần nộp lại bài này.</p><p>Nếu em không cùng làm bài này, em bấm vào liên kết sau để báo lại: <a href="{$a->url}">Em không cùng làm bài này</a>.</p><p>{$a->ky}</p>';
+$string['tb_duockhai_ngan'] = '{$a->ban} liệt kê em cùng làm "{$a->bai}".';
+$string['tb_duockhai_tieude'] = '{$a->ban} liệt kê em cùng làm "{$a->bai}"';
+$string['tb_kyten'] = 'Hệ thống {$a}';
+$string['tb_tuchoi'] = 'Chào em,
+
+Bạn {$a->ban} báo không cùng làm bài "{$a->bai}" em đã nộp, nên bạn ấy không được tính là cùng nhóm. Nếu có nhầm lẫn, em sửa danh sách thành viên ở trang nộp bài: {$a->url}
+
+{$a->ky}';
+$string['tb_tuchoi_html'] = '<p>Chào em,</p><p>Bạn <strong>{$a->ban}</strong> báo không cùng làm bài <a href="{$a->url}">{$a->bai}</a> em đã nộp, nên bạn ấy không được tính là cùng nhóm. Nếu có nhầm lẫn, em sửa danh sách thành viên ở trang nộp bài.</p><p>{$a->ky}</p>';
 $string['tb_tuchoi_tieude'] = '{$a->ban} báo không cùng làm "{$a->bai}"';
 $string['th_bainop'] = 'Bài nộp từ lúc bật (course áp dụng)';
 $string['th_ban'] = 'Số lượt bạn được khai';
@@ -184,3 +210,4 @@ $string['truongma'] = 'Mã sinh viên hiện theo';
 $string['truongma_help'] = 'Trường hồ sơ hiện cạnh họ tên trong danh sách chọn (idnumber trống thì dùng username).';
 $string['tuchoi_da'] = 'Em đã báo không cùng làm bài "{$a->bai}" (môn {$a->mon}) do bạn {$a->ban} nộp.';
 $string['tuchoi_hoi'] = 'Bạn {$a->ban} đã nộp bài "{$a->bai}" (môn {$a->mon}) và khai em cùng làm. Nếu em không cùng làm bài này, bấm "Không phải em" — em sẽ không được tính là đã nộp theo bài này, và bạn {$a->ban} được báo.';
+$string['ungvien_danop'] = 'đã nộp lúc {$a}, có tên em trong nhóm';

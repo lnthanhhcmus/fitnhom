@@ -38,5 +38,12 @@ function xmldb_local_fitnhom_upgrade($oldversion) {
         }
         upgrade_plugin_savepoint(true, 2026110100, 'local', 'fitnhom');
     }
+    if ($oldversion < 2026110101) {
+        // 0.2.1: tên người gửi thông báo (mặc định FIT-MOODLE — góp ý chủ dự án 01/11/2026). Không đổi bảng.
+        if (get_config('local_fitnhom', 'nguoigui') === false) {
+            set_config('nguoigui', 'FIT-MOODLE', 'local_fitnhom');
+        }
+        upgrade_plugin_savepoint(true, 2026110101, 'local', 'fitnhom');
+    }
     return true;
 }

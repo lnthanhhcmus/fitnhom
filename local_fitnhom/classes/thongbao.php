@@ -18,7 +18,8 @@ namespace local_fitnhom;
 
 /**
  * Hai thông báo Moodle của Fit-Nhóm (TL54 mục 3): bạn được khai, và người nộp khi một bạn bấm "Không phải em". Tách từ khai ở
- * 0.2 (TL60 mục 5.8) — không đổi nội dung thông báo. Gọi sau khi giao dịch đã ghi.
+ * 0.2 (TL60 mục 5.8). 0.2.1 (góp ý chủ dự án 01/11/2026): người gửi mang tên ở Cài đặt (mặc định FIT-MOODLE), thư có
+ * câu chào, chữ "liệt kê" thay "khai", liên kết báo lại ghi đầy đủ, dòng ký "Hệ thống …". Gọi sau khi giao dịch đã ghi.
  *
  * @package    local_fitnhom
  * @copyright  2026 Khoa Công nghệ Thông tin, Trường Đại học Khoa học Tự nhiên, ĐHQG-HCM
@@ -46,11 +47,11 @@ class thongbao {
         $mon = format_string((string) $DB->get_field('course', 'fullname', ['id' => $assign->course]));
         $a = (object) ['ban' => fullname($nop), 'bai' => format_string($assign->name), 'mon' => $mon,
             'url' => (new \moodle_url('/local/fitnhom/tuchoi.php', ['id' => $tvid]))->out(false),
-            'urlbai' => (new \moodle_url('/mod/assign/view.php', ['id' => $cm->id]))->out(false)];
+            'urlbai' => (new \moodle_url('/mod/assign/view.php', ['id' => $cm->id]))->out(false), 'ky' => self::ky_ten()];
         $m = new \core\message\message();
         $m->component = 'local_fitnhom';
         $m->name = 'duockhai';
-        $m->userfrom = \core_user::get_noreply_user();
+        $m->userfrom = self::nguoi_gui();
         $m->userto = $nhan;
         $m->courseid = (int) $assign->course;
         $m->subject = get_string('tb_duockhai_tieude', 'local_fitnhom', $a);
@@ -60,7 +61,7 @@ class thongbao {
         $m->smallmessage = get_string('tb_duockhai_ngan', 'local_fitnhom', $a);
         $m->notification = 1;
         $m->contexturl = $a->url;
-        $m->contexturlname = get_string('khongphaiem', 'local_fitnhom');
+        $m->contexturlname = get_string('tb_baolai', 'local_fitnhom');
         message_send($m);
     }
 
@@ -80,21 +81,52 @@ class thongbao {
             return;
         }
         $a = (object) ['ban' => fullname($ban), 'bai' => format_string($assign->name),
-            'url' => (new \moodle_url('/mod/assign/view.php', ['id' => $cm->id]))->out(false)];
+            'url' => (new \moodle_url('/mod/assign/view.php', ['id' => $cm->id]))->out(false), 'ky' => self::ky_ten()];
         $m = new \core\message\message();
         $m->component = 'local_fitnhom';
         $m->name = 'tuchoi';
-        $m->userfrom = \core_user::get_noreply_user();
+        $m->userfrom = self::nguoi_gui();
         $m->userto = $nop;
         $m->courseid = (int) $assign->course;
         $m->subject = get_string('tb_tuchoi_tieude', 'local_fitnhom', $a);
         $m->fullmessage = get_string('tb_tuchoi', 'local_fitnhom', $a);
         $m->fullmessageformat = FORMAT_PLAIN;
-        $m->fullmessagehtml = '<p>' . s($m->fullmessage) . '</p>';
+        $m->fullmessagehtml = get_string('tb_tuchoi_html', 'local_fitnhom', $a);
         $m->smallmessage = $m->subject;
         $m->notification = 1;
         $m->contexturl = $a->url;
         $m->contexturlname = format_string($assign->name);
         message_send($m);
+    }
+
+    /**
+     * Người gửi thông báo: người dùng "không trả lời" của Moodle mang tên ở Cài đặt (mặc định "FIT-MOODLE") thay cho
+     * "Xin đừng trả lời về địa chỉ gửi thư này" (góp ý 01/11/2026). Địa chỉ gửi vẫn là địa chỉ không trả lời của trang;
+     * phần "(qua <tên trang>)" sau tên là cài đặt chung của Moodle (Email đi › Thông tin "qua").
+     *
+     * @return \stdClass
+     */
+    public static function nguoi_gui(): \stdClass {
+        $u = clone \core_user::get_noreply_user();
+        $ten = trim((string) get_config('local_fitnhom', 'nguoigui'));
+        if ($ten !== '') {
+            $u->firstname = $ten;
+            $u->lastname = '';
+            foreach (['firstnamephonetic', 'lastnamephonetic', 'middlename', 'alternatename'] as $f) {
+                $u->$f = '';
+            }
+        }
+        return $u;
+    }
+
+    /**
+     * Dòng ký cuối thư: "Hệ thống FIT-MOODLE" (tên người gửi ở Cài đặt; trống thì tên rút gọn của trang).
+     *
+     * @return string
+     */
+    public static function ky_ten(): string {
+        global $SITE;
+        $ten = trim((string) get_config('local_fitnhom', 'nguoigui'));
+        return get_string('tb_kyten', 'local_fitnhom', $ten !== '' ? $ten : format_string($SITE->shortname));
     }
 }
