@@ -17,7 +17,8 @@
 namespace local_fitnhom;
 
 /**
- * Hai thông báo Moodle của Fit-Nhóm (TL54 mục 3): bạn được khai, và người nộp khi một bạn bấm "Không phải em". Tách từ khai ở
+ * Thông báo Moodle của Fit-Nhóm (TL54 mục 3): bạn được khai, người nộp khi một bạn bấm "Không phải em", và (0.2.3) bạn bị bỏ
+ * khỏi danh sách khi người nộp sửa lại câu khai. Tách từ khai ở
  * 0.2 (TL60 mục 5.8). 0.2.1 (góp ý chủ dự án 01/11/2026): người gửi mang tên ở Cài đặt (mặc định FIT-MOODLE), thư có
  * câu chào, chữ "liệt kê" thay "khai", liên kết báo lại ghi đầy đủ, dòng ký "Hệ thống …". Gọi sau khi giao dịch đã ghi.
  *
@@ -62,6 +63,43 @@ class thongbao {
         $m->notification = 1;
         $m->contexturl = $a->url;
         $m->contexturlname = get_string('tb_baolai', 'local_fitnhom');
+        message_send($m);
+    }
+
+    /**
+     * Thông báo cho một bạn vừa bị bỏ khỏi danh sách thành viên khi người nộp sửa câu khai — bớt bạn, hay đổi sang "Em làm một
+     * mình" (0.2.3, chủ dự án 01/11/2026): em biết mình không còn được tính theo bài nộp đó.
+     *
+     * @param int $uid Bạn bị bỏ.
+     * @param \stdClass $assign Bài tập (id, course, name).
+     * @param \stdClass $cm Course module.
+     * @param int $nguoinop Người nộp.
+     * @return void
+     */
+    public static function khong_con(int $uid, \stdClass $assign, \stdClass $cm, int $nguoinop): void {
+        global $DB;
+        $nop = \core_user::get_user($nguoinop);
+        $nhan = \core_user::get_user($uid);
+        if (!$nop || !$nhan) {
+            return;
+        }
+        $mon = format_string((string) $DB->get_field('course', 'fullname', ['id' => $assign->course]));
+        $a = (object) ['ban' => fullname($nop), 'bai' => format_string($assign->name), 'mon' => $mon,
+            'urlbai' => (new \moodle_url('/mod/assign/view.php', ['id' => $cm->id]))->out(false), 'ky' => self::ky_ten()];
+        $m = new \core\message\message();
+        $m->component = 'local_fitnhom';
+        $m->name = 'khongcon';
+        $m->userfrom = self::nguoi_gui();
+        $m->userto = $nhan;
+        $m->courseid = (int) $assign->course;
+        $m->subject = get_string('tb_khongcon_tieude', 'local_fitnhom', $a);
+        $m->fullmessage = get_string('tb_khongcon', 'local_fitnhom', $a);
+        $m->fullmessageformat = FORMAT_PLAIN;
+        $m->fullmessagehtml = get_string('tb_khongcon_html', 'local_fitnhom', $a);
+        $m->smallmessage = $m->subject . '.';
+        $m->notification = 1;
+        $m->contexturl = $a->urlbai;
+        $m->contexturlname = $a->bai;
         message_send($m);
     }
 

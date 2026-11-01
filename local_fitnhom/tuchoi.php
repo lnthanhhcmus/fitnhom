@@ -29,7 +29,19 @@ use local_fitnhom\khai;
 require_login(null, false);
 $id = required_param('id', PARAM_INT);
 $action = optional_param('action', '', PARAM_ALPHA);
-$t = $DB->get_record('local_fitnhom_tv', ['id' => $id], '*', MUST_EXIST);
+$t = $DB->get_record('local_fitnhom_tv', ['id' => $id]);
+if (!$t) {
+    // Liên kết trong thư cũ, người nộp đã bỏ em khỏi danh sách (0.2.3): báo nhẹ thay vì lỗi "không tìm thấy dữ liệu".
+    $PAGE->set_context(context_system::instance());
+    $PAGE->set_url(new moodle_url('/local/fitnhom/tuchoi.php', ['id' => $id]));
+    $PAGE->set_pagelayout('standard');
+    $PAGE->set_title(get_string('khongphaiem', 'local_fitnhom'));
+    $PAGE->set_heading(get_string('khongphaiem', 'local_fitnhom'));
+    echo $OUTPUT->header();
+    echo $OUTPUT->notification(get_string('tuchoi_khongcon', 'local_fitnhom'), \core\output\notification::NOTIFY_INFO);
+    echo $OUTPUT->footer();
+    die();
+}
 if ((int) $t->userid !== (int) $USER->id) {
     throw new moodle_exception('loi_khongphaicuaem', 'local_fitnhom');
 }

@@ -113,7 +113,9 @@ final class khai_test extends \advanced_testcase {
         khai::tu_choi((int) $k->tv[(int) $sv[2]->id]->id, (int) $sv[2]->id, false, time());
         $sink = $this->redirectMessages();
         khai::luu($sub, khai::NHOM, [$sv[2]->id, $sv[3]->id], khai::FORM, time(), (int) $sv[0]->id);
-        $tb = array_filter($sink->get_messages(), fn($m) => $m->component === 'local_fitnhom');
+        // Từ 0.2.3 (chủ dự án 01/11/2026 12:44) bạn bị bỏ nhận thư "không còn liệt kê em" — xem ban023_test; ở đây chỉ xét thư
+        // "liệt kê em": bạn mới được báo, bạn giữ nguyên không báo lại.
+        $tb = array_filter($sink->get_messages(), fn($m) => $m->component === 'local_fitnhom' && $m->eventtype === 'duockhai');
         $sink->close();
         $this->assertSame([(int) $sv[3]->id], array_values(array_map(fn($m) => (int) $m->useridto, $tb)));
         $k = khai::cua_bai_nop((int) $sub->id);

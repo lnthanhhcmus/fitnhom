@@ -152,7 +152,9 @@ class khai {
 
     /**
      * Lưu câu khai của một bài nộp (thay câu cũ). Bạn mới được khai nhận thông báo; bạn đã bấm "Không phải em" mà vẫn được
-     * khai lại thì giữ trạng thái từ chối. Bỏ bài khỏi danh sách chờ hộp nổi.
+     * khai lại thì giữ trạng thái từ chối. Bạn bị bỏ khỏi danh sách (bớt bạn, hay đổi sang "Em làm một mình") thì xóa và nhận
+     * thông báo "không còn liệt kê em" (0.2.3, chủ dự án 01/11/2026) — trừ bạn đã bấm "Không phải em". Bỏ bài khỏi danh sách
+     * chờ hộp nổi.
      *
      * @param \stdClass $sub Bài nộp (assign_submission: id, assignment, userid).
      * @param string $loai MOT | NHOM.
@@ -187,6 +189,7 @@ class khai {
         } else {
             $ban = [];
         }
+        $bot = [];
         $tx = $DB->start_delegated_transaction();
         $cu = self::cua_bai_nop((int) $sub->id);
         if ($cu) {
@@ -196,6 +199,9 @@ class khai {
             foreach ($cu->tv as $uid => $t) {
                 if (!in_array($uid, $ban, true)) {
                     $DB->delete_records('local_fitnhom_tv', ['id' => $t->id]);
+                    if ($t->trangthai === self::KHAI) {
+                        $bot[] = (int) $uid;
+                    }
                 }
             }
         } else {
@@ -217,8 +223,21 @@ class khai {
         $ctx = \context_module::instance($cm->id);
         event\khai_luu::create(['context' => $ctx, 'objectid' => $khaiid, 'relateduserid' => (int) $sub->userid,
             'other' => ['loai' => $loai, 'soban' => count($ban), 'nguon' => $nguon]])->trigger();
+        // Mỗi thư gửi riêng: một thư lỗi (máy chủ thư trục trặc) không chặn thư cho các bạn khác, không làm hỏng lần lưu đã
+        // ghi (0.2.3 — đi thử thấy lỗi bộ gửi email ở bạn thứ nhất làm bạn thứ hai mất thông báo).
         foreach ($moi as $uid) {
-            thongbao::duoc_khai($khaiid, $uid, $assign, $cm, (int) $sub->userid);
+            try {
+                thongbao::duoc_khai($khaiid, $uid, $assign, $cm, (int) $sub->userid);
+            } catch (\Throwable $e) {
+                continue;
+            }
+        }
+        foreach ($bot as $uid) {
+            try {
+                thongbao::khong_con($uid, $assign, $cm, (int) $sub->userid);
+            } catch (\Throwable $e) {
+                continue;
+            }
         }
         return self::cua_bai_nop((int) $sub->id);
     }

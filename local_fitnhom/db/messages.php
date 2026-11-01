@@ -31,4 +31,7 @@ $messageproviders = [
     // Bạn được khai bấm "Không phải em" — báo người nộp.
     'tuchoi' => ['defaults' => ['popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
         'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED]],
+    // Bạn bị bỏ khỏi danh sách khi người nộp sửa câu khai (0.2.3).
+    'khongcon' => ['defaults' => ['popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
+        'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED]],
 ];

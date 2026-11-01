@@ -1,6 +1,6 @@
 # TL54 — Fit-Nhóm: khai thành viên nhóm khi nộp bài trên Moodle (thiết kế v0.6)
 
-*v0.6 · 01/11/2026 — góp ý của chủ dự án khi cài thử 0.2 (bản **0.2.1**): câu hỏi đổi thành **Thành viên nhóm** (mục 2); chưa chọn mà bấm Lưu thì **dòng đỏ** hiện ngay dưới hai nút (0.1–0.2 không hiện — lỗi); ô chọn bạn ghi cạnh tên **bạn đã nộp có liệt kê em** (mục 3a); **Q2 điều chỉnh**: *Tải toàn bộ bài nộp* có thêm tệp ghi chú `Thanh-vien-nhom.txt` (mục 2); thư thông báo: người gửi **FIT-MOODLE**, câu chào, chữ *liệt kê* thay *khai*, dòng ký (mục 3). Sổ điều chỉnh: TL60 v1.3 mục 13. Bản v0.5 ở `docs/ban-cu/`. **Sửa 01/11/2026 11:30 (bản 0.2.2, chủ dự án 11:22):** bỏ câu giải thích dưới nhãn (*"Bắt buộc chọn một" dễ bị hiểu thành bắt buộc chọn làm một mình*), nút nhóm chỉ còn *Bài nhóm*.*
+*v0.6 · 01/11/2026 — góp ý của chủ dự án khi cài thử 0.2 (bản **0.2.1**): câu hỏi đổi thành **Thành viên nhóm** (mục 2); chưa chọn mà bấm Lưu thì **dòng đỏ** hiện ngay dưới hai nút (0.1–0.2 không hiện — lỗi); ô chọn bạn ghi cạnh tên **bạn đã nộp có liệt kê em** (mục 3a); **Q2 điều chỉnh**: *Tải toàn bộ bài nộp* có thêm tệp ghi chú `Thanh-vien-nhom.txt` (mục 2); thư thông báo: người gửi **FIT-MOODLE**, câu chào, chữ *liệt kê* thay *khai*, dòng ký (mục 3). Sổ điều chỉnh: TL60 v1.3 mục 13. Bản v0.5 ở `docs/ban-cu/`. **Sửa 01/11/2026 11:30 (bản 0.2.2, chủ dự án 11:22):** bỏ câu giải thích dưới nhãn (*"Bắt buộc chọn một" dễ bị hiểu thành bắt buộc chọn làm một mình*), nút nhóm chỉ còn *Bài nhóm*. **Sửa 01/11/2026 13:10 (bản 0.2.3, chủ dự án 12:44):** người nộp sửa danh sách — bớt bạn, đổi sang *Em làm một mình* — thì bạn bị bỏ nhận thư *"không còn liệt kê em"* (mục 3).*
 
 *v0.5 · 31/10/2026 — **thiết kế sản phẩm** Fit-Nhóm (vì sao có, Q1–Q7, cách dùng, hợp đồng). Mọi điều về **đợt 1.8** (Fit-Nhóm 0.2 + FIT-CNL 1.8.0 — đặc tả, thứ tự làm, kiểm chéo, câu mở phiên, sổ điều chỉnh) chuyển sang **TL60** `docs/TL60_Thiet-ke-dot-1.8_Fit-Nhom-0.2-va-FIT-CNL-1.8.0_v1.1.md` (bản gốc ở kho `fit-cnl/docs/1.0/`, kho này giữ bản chép cùng phiên bản) — mục 10–12 của v0.4 bỏ, mục 6 chỉ còn hợp đồng. Sửa theo rà soát 0.1 (TL60 mục 3): danh sách course thử là ô nhiều dòng mã rút gọn (không phải ô gõ-chọn); `khai::luu` đã có giao dịch từ 0.1. Bản v0.4 ở `docs/ban-cu/`.*
 
@@ -71,6 +71,13 @@ Với giảng viên: **không có ô bật / tắt** trong cài đặt bài tậ
   > Hệ thống FIT-MOODLE
 
   Phần *"(qua <tên trang>)"* sau tên người gửi là cài đặt chung của Moodle (Quản trị trang › Máy chủ › Email › Email đi › *Thông tin "qua"*) — Fit-Nhóm không đổi. Thư báo người nộp khi một bạn báo không cùng làm cũng có câu chào và dòng ký.
+- **Người nộp sửa lại danh sách** (0.2.3, chủ dự án 01/11/2026 12:44): mở lại trang nộp bài, bớt bạn hay chọn lại *Em làm một mình* (ô các bạn chỉ hiện khi chọn *Bài nhóm*) rồi Lưu → các bạn bị bỏ **bị xóa khỏi danh sách** (không còn được tính đã nộp theo bài đó) và nhận thư từ FIT-MOODLE, tiêu đề *"A không còn liệt kê em trong "X""*:
+  > Chào em,
+  > Bạn **A** vừa sửa bài nộp **X** (môn Y) và không còn liệt kê em là thành viên cùng làm, nên em không còn được tính là đã nộp theo bài của bạn ấy.
+  > Nếu em có cùng làm bài này, em trao đổi lại với bạn A, hoặc tự nộp bài ở *trang bài tập*.
+  > Hệ thống FIT-MOODLE
+
+  Bạn mới thêm nhận thư *"liệt kê em"* như trên; bạn giữ nguyên không nhận thư lại; bạn đã bấm *Không phải em* thì bị bỏ mà không nhận thư. Liên kết *Em không cùng làm bài này* trong thư cũ của bạn bị bỏ mở ra trang báo *"Bài nộp này không còn liệt kê em … Em không cần làm gì thêm"* (không báo lỗi). Mỗi thư gửi riêng — một thư lỗi không làm mất thư của bạn khác.
 - **Không phải em** (trang của Fit-Nhóm, phải đăng nhập, chỉ chính em bấm được): em đó không được tính; người nộp nhận thông báo; giảng viên thấy dấu gạch ở bảng chấm. Bấm nhầm thì *Hoàn tác* trong 7 ngày.
 
 ## 3a. Hai bạn cùng nhóm đều nộp, nộp bản cập nhật
@@ -153,7 +160,8 @@ Không lưu nội dung bài. Khai báo với **Privacy API** của Moodle (xuấ
 | **Fit-Nhóm 0.1** | Hai thành phần; mục 2–5, 7; trang quản trị; Quét ngay; PHPUnit + đi thử trình duyệt; README, hướng dẫn quản trị, trang ngắn cho giảng viên / sinh viên; phiếu cài đặt | **phát hành 26/10/2026**, chờ chủ dự án cài thử trên một course |
 | **Fit-Nhóm 0.2** | Trang *Thành viên nhóm* cho giảng viên; nhận diện course theo định dạng; tình hình theo course + Cần xem; hộp nổi nhẹ; `cua_nguoi()`, `ap_dung()`; `upgrade.php`; privacy xuất `cho`; tách tệp | phát hành 31/10/2026 (version 2026110100, TL60 v1.2 mục 5, 13) |
 | **Fit-Nhóm 0.2.1** | Góp ý cài thử 0.2: câu *Thành viên nhóm*, dòng đỏ khi chưa chọn, cạnh tên bạn đã nộp có liệt kê em, tệp ghi chú trong *Tải toàn bộ bài nộp* (Q2 điều chỉnh), thư FIT-MOODLE có chào / ký, chữ *liệt kê* | phát hành 01/11/2026 sáng (version 2026110101, TL60 v1.3 mục 13) |
-| **Fit-Nhóm 0.2.2** | Bỏ câu giải thích dưới nhãn *Thành viên nhóm*, nút *Bài nhóm* gọn | **phát hành 01/11/2026 11:30** (version 2026110102) — chờ chủ dự án cài thử |
+| **Fit-Nhóm 0.2.2** | Bỏ câu giải thích dưới nhãn *Thành viên nhóm*, nút *Bài nhóm* gọn | **phát hành 01/11/2026 11:30** (version 2026110102) |
+| **Fit-Nhóm 0.2.3** | Người nộp bớt bạn / đổi sang *Em làm một mình*: bạn bị bỏ nhận thư *"không còn liệt kê em"*; liên kết cũ không báo lỗi | **phát hành 01/11/2026 13:10** (version 2026110103) — chờ chủ dự án cài thử |
 | **FIT-CNL 1.8.0** | Đọc hợp đồng (mục 6) để tính *đã nộp* cho em được khai; sửa *Sắp tới hạn* bỏ sót bài nhóm | thiết kế xong — **TL60 mục 6**, bước 2 của đợt 1.8 (kho `fit-cnl`) |
 | Fit-Nhóm 0.3 (khi cần) | Ứng dụng Moodle trên điện thoại — khung ở TL60 mục 10 | sau khi thử 0.1 / 0.2 trên máy thật |
 

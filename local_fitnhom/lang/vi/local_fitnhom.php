@@ -127,6 +127,7 @@ $string['loi_quanhieu'] = 'Chỉ chọn tối đa {$a} bạn.';
 $string['loi_thamso'] = 'Dữ liệu khai không hợp lệ.';
 $string['luu'] = 'Lưu';
 $string['messageprovider:duockhai'] = 'Em được bạn liệt kê cùng làm một bài nộp';
+$string['messageprovider:khongcon'] = 'Em không còn được liệt kê trong một bài nộp';
 $string['messageprovider:tuchoi'] = 'Bạn được liệt kê báo không cùng làm';
 $string['motminh'] = 'Làm một mình';
 $string['motminh_nut'] = 'Em làm một mình';
@@ -148,7 +149,7 @@ $string['privacy:metadata:khai:loai'] = 'Một mình / bài nhóm';
 $string['privacy:metadata:khai:nguon'] = 'Khai ở trang nộp bài hay hộp nổi';
 $string['privacy:metadata:khai:userid'] = 'Người nộp';
 $string['privacy:metadata:khai:usermodified'] = 'Người bấm lưu';
-$string['privacy:metadata:message'] = 'Thông báo "được khai cùng nhóm" và "Không phải em" gửi qua hệ thông báo của Moodle';
+$string['privacy:metadata:message'] = 'Thông báo "được khai cùng nhóm", "Không phải em" và "không còn liệt kê em" gửi qua hệ thông báo của Moodle';
 $string['privacy:metadata:pref_desau'] = 'Ngày bấm "Để sau" ở hộp nổi';
 $string['privacy:metadata:submissionid'] = 'Bài nộp';
 $string['privacy:metadata:timemodified'] = 'Thời gian';
@@ -172,6 +173,15 @@ Nếu em không cùng làm bài này, em mở liên kết sau để báo lại: 
 $string['tb_duockhai_html'] = '<p>Chào em,</p><p>Bạn <strong>{$a->ban}</strong> vừa nộp bài <a href="{$a->urlbai}">{$a->bai}</a> (môn {$a->mon}) và liệt kê em là thành viên cùng làm. Em không cần nộp lại bài này.</p><p>Nếu em không cùng làm bài này, em bấm vào liên kết sau để báo lại: <a href="{$a->url}">Em không cùng làm bài này</a>.</p><p>{$a->ky}</p>';
 $string['tb_duockhai_ngan'] = '{$a->ban} liệt kê em cùng làm "{$a->bai}".';
 $string['tb_duockhai_tieude'] = '{$a->ban} liệt kê em cùng làm "{$a->bai}"';
+$string['tb_khongcon'] = 'Chào em,
+
+Bạn {$a->ban} vừa sửa bài nộp "{$a->bai}" (môn {$a->mon}) và không còn liệt kê em là thành viên cùng làm, nên em không còn được tính là đã nộp theo bài của bạn ấy.
+
+Nếu em có cùng làm bài này, em trao đổi lại với bạn {$a->ban}, hoặc tự nộp bài ở trang bài tập: {$a->urlbai}
+
+{$a->ky}';
+$string['tb_khongcon_html'] = '<p>Chào em,</p><p>Bạn <strong>{$a->ban}</strong> vừa sửa bài nộp <a href="{$a->urlbai}">{$a->bai}</a> (môn {$a->mon}) và không còn liệt kê em là thành viên cùng làm, nên em không còn được tính là đã nộp theo bài của bạn ấy.</p><p>Nếu em có cùng làm bài này, em trao đổi lại với bạn {$a->ban}, hoặc tự nộp bài ở <a href="{$a->urlbai}">trang bài tập</a>.</p><p>{$a->ky}</p>';
+$string['tb_khongcon_tieude'] = '{$a->ban} không còn liệt kê em trong "{$a->bai}"';
 $string['tb_kyten'] = 'Hệ thống {$a}';
 $string['tb_tuchoi'] = 'Chào em,
 
@@ -209,4 +219,5 @@ $string['truongma'] = 'Mã sinh viên hiện theo';
 $string['truongma_help'] = 'Trường hồ sơ hiện cạnh họ tên trong danh sách chọn (idnumber trống thì dùng username).';
 $string['tuchoi_da'] = 'Em đã báo không cùng làm bài "{$a->bai}" (môn {$a->mon}) do bạn {$a->ban} nộp.';
 $string['tuchoi_hoi'] = 'Bạn {$a->ban} đã nộp bài "{$a->bai}" (môn {$a->mon}) và khai em cùng làm. Nếu em không cùng làm bài này, bấm "Không phải em" — em sẽ không được tính là đã nộp theo bài này, và bạn {$a->ban} được báo.';
+$string['tuchoi_khongcon'] = 'Bài nộp này không còn liệt kê em là thành viên cùng làm (người nộp đã sửa danh sách). Em không cần làm gì thêm.';
 $string['ungvien_danop'] = 'đã nộp lúc {$a}, có tên em trong nhóm';

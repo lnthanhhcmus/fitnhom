@@ -127,6 +127,7 @@ $string['loi_quanhieu'] = 'Choose at most {$a} members.';
 $string['loi_thamso'] = 'Invalid declaration.';
 $string['luu'] = 'Save';
 $string['messageprovider:duockhai'] = 'A classmate listed you as a member of a submission';
+$string['messageprovider:khongcon'] = 'You are no longer listed on a submission';
 $string['messageprovider:tuchoi'] = 'A listed member says they did not work on it';
 $string['motminh'] = 'Worked alone';
 $string['motminh_nut'] = 'I worked alone';
@@ -148,7 +149,7 @@ $string['privacy:metadata:khai:loai'] = 'Alone / group';
 $string['privacy:metadata:khai:nguon'] = 'Declared on the submission page or the pop-up';
 $string['privacy:metadata:khai:userid'] = 'Submitter';
 $string['privacy:metadata:khai:usermodified'] = 'User who saved it';
-$string['privacy:metadata:message'] = 'Notifications about being named and "Not me" are sent through Moodle messaging';
+$string['privacy:metadata:message'] = 'Notifications about being named, "Not me" and no longer being listed are sent through Moodle messaging';
 $string['privacy:metadata:pref_desau'] = 'Day "Later" was chosen in the pop-up';
 $string['privacy:metadata:submissionid'] = 'Submission';
 $string['privacy:metadata:timemodified'] = 'Time';
@@ -172,6 +173,15 @@ If you did not work on it, please let us know using this link: {$a->url}
 $string['tb_duockhai_html'] = '<p>Hello,</p><p><strong>{$a->ban}</strong> has just submitted <a href="{$a->urlbai}">{$a->bai}</a> ({$a->mon}) and listed you as a member who worked on it. You do not need to submit this assignment again.</p><p>If you did not work on it, please let us know using this link: <a href="{$a->url}">I did not work on this</a>.</p><p>{$a->ky}</p>';
 $string['tb_duockhai_ngan'] = '{$a->ban} listed you as a member of "{$a->bai}".';
 $string['tb_duockhai_tieude'] = '{$a->ban} listed you as a member of "{$a->bai}"';
+$string['tb_khongcon'] = 'Hello,
+
+{$a->ban} has just edited the submission "{$a->bai}" ({$a->mon}) and no longer lists you as a member who worked on it, so you are no longer counted as having submitted through it.
+
+If you did work on it, please talk to {$a->ban} again, or submit your own work on the assignment page: {$a->urlbai}
+
+{$a->ky}';
+$string['tb_khongcon_html'] = '<p>Hello,</p><p><strong>{$a->ban}</strong> has just edited the submission <a href="{$a->urlbai}">{$a->bai}</a> ({$a->mon}) and no longer lists you as a member who worked on it, so you are no longer counted as having submitted through it.</p><p>If you did work on it, please talk to {$a->ban} again, or submit your own work on the <a href="{$a->urlbai}">assignment page</a>.</p><p>{$a->ky}</p>';
+$string['tb_khongcon_tieude'] = '{$a->ban} no longer lists you on "{$a->bai}"';
 $string['tb_kyten'] = '{$a} system';
 $string['tb_tuchoi'] = 'Hello,
 
@@ -209,4 +219,5 @@ $string['truongma'] = 'Student code shown from';
 $string['truongma_help'] = 'Profile field shown next to the name in the picker (username when idnumber is empty).';
 $string['tuchoi_da'] = 'You said you did not work on "{$a->bai}" ({$a->mon}) submitted by {$a->ban}.';
 $string['tuchoi_hoi'] = '{$a->ban} submitted "{$a->bai}" ({$a->mon}) and named you as a member. If you did not work on it, choose "Not me" — you will not be counted as submitted through this work, and {$a->ban} will be notified.';
+$string['tuchoi_khongcon'] = 'This submission no longer lists you as a member (the submitter edited the list). You do not need to do anything.';
 $string['ungvien_danop'] = 'submitted at {$a}, lists you as a member';
