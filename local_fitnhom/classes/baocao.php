@@ -31,6 +31,8 @@ class baocao {
     public const NGAY_TUCHOI = 60;
     /** @var int Số course tối đa ở bảng Theo course. */
     public const SO_COURSE = 50;
+    /** @var int Mốc thay khi chưa ghi "Lúc bật": không bài nào qua điều kiện thời gian, chỉ bài có câu khai được đếm. */
+    public const KHONG_MOC = 9999999999;
 
     /**
      * Bảng theo bài tập của một course: mọi bài tập có bài nộp từ lúc bật. Bài bật *Nộp theo nhóm* của Moodle chỉ có tên
@@ -41,15 +43,16 @@ class baocao {
      */
     public static function theo_bai(int $courseid): array {
         global $DB;
-        $bd = phamvi::bat_dau();
-        if (!$bd) {
-            return [];
-        }
+        // Bài nộp từ lúc bật, hay đã có câu khai (luôn đếm — 0.2.5: mốc thiếu / ghi muộn không làm trang báo "chưa có bài
+        // nộp nào" khi bảng chấm đã hiện câu khai). Chưa có mốc: chỉ bài có câu khai.
+        $bd = phamvi::bat_dau() ?: self::KHONG_MOC;
         $bai = $DB->get_records_sql(
             "SELECT a.id, a.name, a.duedate, a.teamsubmission, COUNT(s.id) AS nop
                FROM {assign} a
                JOIN {assign_submission} s ON s.assignment = a.id AND s.latest = 1 AND s.status = 'submitted'
-                    AND s.timemodified >= :bd AND (a.teamsubmission = 1 OR s.userid > 0)
+                    AND (a.teamsubmission = 1 OR s.userid > 0)
+                    AND (s.timemodified >= :bd
+                         OR EXISTS (SELECT 1 FROM {local_fitnhom_khai} k0 WHERE k0.submissionid = s.id))
               WHERE a.course = :c
            GROUP BY a.id, a.name, a.duedate, a.teamsubmission
            ORDER BY a.duedate, a.id",
@@ -192,17 +195,15 @@ class baocao {
      */
     public static function theo_course(int $danhmuc = 0): array {
         global $DB;
-        $bd = phamvi::bat_dau();
-        if (!$bd) {
-            return [];
-        }
+        $bd = phamvi::bat_dau() ?: self::KHONG_MOC;
         $ds = $DB->get_records_sql(
             "SELECT a.course, COUNT(s.id) AS nop, COUNT(k.id) AS khai,
                     SUM(CASE WHEN k.loai = :nhom THEN 1 ELSE 0 END) AS nhom
                FROM {assign_submission} s
                JOIN {assign} a ON a.id = s.assignment
           LEFT JOIN {local_fitnhom_khai} k ON k.submissionid = s.id
-              WHERE s.status = 'submitted' AND s.latest = 1 AND s.userid > 0 AND a.teamsubmission = 0 AND s.timemodified >= :bd
+              WHERE s.status = 'submitted' AND s.latest = 1 AND s.userid > 0 AND a.teamsubmission = 0
+                    AND (s.timemodified >= :bd OR k.id IS NOT NULL)
            GROUP BY a.course",
             ['bd' => $bd, 'nhom' => khai::NHOM]
         );

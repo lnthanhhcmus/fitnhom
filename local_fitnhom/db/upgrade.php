@@ -29,6 +29,7 @@
  * @return bool
  */
 function xmldb_local_fitnhom_upgrade($oldversion) {
+    require_once(__DIR__ . '/upgradelib.php');
     if ($oldversion < 2026110100) {
         // 0.2: ba cấu hình mới (định dạng course loại trừ, ngưỡng khối Cần xem). Không đổi bảng.
         foreach (['loaitru_format' => 'fitcnl', 'batthuong_tuchoi' => 3, 'batthuong_khai' => 5] as $ten => $macdinh) {
@@ -44,6 +45,11 @@ function xmldb_local_fitnhom_upgrade($oldversion) {
             set_config('nguoigui', 'FIT-MOODLE', 'local_fitnhom');
         }
         upgrade_plugin_savepoint(true, 2026110101, 'local', 'fitnhom');
+    }
+    if ($oldversion < 2026110105) {
+        // 0.2.5: "Lúc bật" chưa được ghi khi đổi Chế độ trên trang cài đặt (0.1–0.2.4) — ghi bù. Không đổi bảng.
+        local_fitnhom_upgrade_ghi_luc_bat(time());
+        upgrade_plugin_savepoint(true, 2026110105, 'local', 'fitnhom');
     }
     return true;
 }

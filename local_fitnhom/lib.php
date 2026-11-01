@@ -23,27 +23,23 @@
  */
 
 /**
- * Gọi khi admin đổi Chế độ: ghi lúc bật lần đầu (Quét ngay chỉ xét bài nộp từ lúc này); không đặt lại khi tắt rồi bật lại.
+ * Gọi khi admin đổi Chế độ — giữ cho mã cũ / kịch bản đi thử; trang cài đặt gọi thẳng `phamvi::chedo_doi()` (0.2.5).
  *
  * @param string $ten Tên cấu hình.
  * @return void
  */
 function local_fitnhom_chedo_doi($ten) {
-    if (get_config('local_fitnhom', 'chedo') !== 'TAT' && !get_config('local_fitnhom', 'batdau')) {
-        set_config('batdau', time(), 'local_fitnhom');
-    }
-    \local_fitnhom\phamvi::xoa_dem();
-    \local_fitnhom\cho::xoa_dem();
+    \local_fitnhom\phamvi::chedo_doi((string) $ten);
 }
 
 /**
- * Đổi cấu hình phạm vi (danh sách thử, loại trừ): xóa đệm phạm vi trong lượt chạy.
+ * Đổi cấu hình phạm vi — giữ cho mã cũ; trang cài đặt gọi thẳng `phamvi::phamvi_doi()` (0.2.5).
  *
  * @param string $ten Tên cấu hình.
  * @return void
  */
 function local_fitnhom_phamvi_doi($ten) {
-    \local_fitnhom\phamvi::xoa_dem();
+    \local_fitnhom\phamvi::phamvi_doi((string) $ten);
 }
 
 /**

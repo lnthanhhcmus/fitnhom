@@ -44,7 +44,8 @@ if ($hassiteconfig) {
                 'BAT' => new lang_string('chedo_BAT', 'local_fitnhom'),
             ]
         );
-        $c->set_updatedcallback('local_fitnhom_chedo_doi');
+        // Hàm của lớp (tự nạp): hàm ở lib.php chưa được nạp khi trang cài đặt lưu — Moodle bỏ qua lặng lẽ (0.2.5).
+        $c->set_updatedcallback('local_fitnhom\\phamvi::chedo_doi');
         $s->add($c);
         $s->add(new admin_setting_configtextarea(
             'local_fitnhom/khoathu',
@@ -64,7 +65,7 @@ if ($hassiteconfig) {
             40,
             3
         );
-        $f->set_updatedcallback('local_fitnhom_phamvi_doi');
+        $f->set_updatedcallback('local_fitnhom\\phamvi::phamvi_doi');
         $s->add($f);
         $s->add(new admin_setting_configtextarea(
             'local_fitnhom/loaitru_mau',

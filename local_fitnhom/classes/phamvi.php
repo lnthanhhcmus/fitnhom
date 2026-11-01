@@ -47,6 +47,33 @@ class phamvi {
     }
 
     /**
+     * Gọi khi admin đổi Chế độ: ghi lúc bật lần đầu (Quét ngay chỉ xét bài nộp từ lúc này); không đặt lại khi tắt rồi bật lại.
+     *
+     * Là hàm của lớp (tự nạp) — 0.1–0.2.4 dùng hàm `local_fitnhom_chedo_doi` ở lib.php: trang cài đặt lưu cấu hình trước khi
+     * lib.php được nạp nên Moodle bỏ qua lặng lẽ, "Lúc bật" không bao giờ được ghi (chủ dự án cài thử 01/11/2026 16:24).
+     *
+     * @param string $ten Tên cấu hình.
+     * @return void
+     */
+    public static function chedo_doi($ten = ''): void {
+        if (self::che_do() !== self::TAT && !self::bat_dau()) {
+            set_config('batdau', time(), 'local_fitnhom');
+        }
+        self::xoa_dem();
+        cho::xoa_dem();
+    }
+
+    /**
+     * Đổi cấu hình phạm vi (danh sách thử, loại trừ): xóa đệm phạm vi trong lượt chạy.
+     *
+     * @param string $ten Tên cấu hình.
+     * @return void
+     */
+    public static function phamvi_doi($ten = ''): void {
+        self::xoa_dem();
+    }
+
+    /**
      * Lúc bật lần đầu (chuyển khỏi Tắt) — Quét ngay chỉ xét bài nộp từ lúc này.
      *
      * @return int 0 = chưa bật lần nào.

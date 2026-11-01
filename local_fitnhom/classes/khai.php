@@ -443,8 +443,8 @@ class khai {
             'noselectionstring' => get_string('cacban_chua', 'local_fitnhom'),
             'placeholder' => get_string('cacban_go', 'local_fitnhom')]);
         $m->setType('fitnhom_tv', PARAM_INT);
-        // Ô các bạn chỉ hiện khi nút "Bài nhóm" được chọn. 0.1–0.2.3 dùng 'neq': Moodle bỏ qua nút chưa chọn nên lúc chưa chọn
-        // nút nào ô vẫn hiện (0.2.4 — chủ dự án 01/11/2026 12:44, 15:11).
+        // Chỉ hiện ô các bạn khi nút "Bài nhóm" được chọn. 0.1–0.2.3 dùng 'neq': Moodle bỏ qua nút chưa chọn nên lúc chưa
+        // chọn nút nào ô vẫn hiện (0.2.4 — chủ dự án 01/11/2026 12:44, 15:11).
         $m->hideIf('fitnhom_tv', 'fitnhom_loai', 'notchecked', self::NHOM);
     }
 
