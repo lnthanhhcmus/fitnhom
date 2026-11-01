@@ -422,6 +422,9 @@ class khai {
      * @return void
      */
     public static function them_cau_hoi(\MoodleQuickForm $m, array $ungvien, string $goiy, bool $batbuoc): void {
+        global $PAGE;
+        // Em chọn thì tắt dòng đỏ "Em chọn …" còn lại từ lần Lưu trước (0.2.4).
+        $PAGE->requires->js_call_amd('local_fitnhom/cauhoi', 'init');
         if ($goiy !== '') {
             $m->addElement('static', 'fitnhom_goiy', '', \html_writer::div($goiy, 'alert alert-info mb-0'));
         }
@@ -440,7 +443,9 @@ class khai {
             'noselectionstring' => get_string('cacban_chua', 'local_fitnhom'),
             'placeholder' => get_string('cacban_go', 'local_fitnhom')]);
         $m->setType('fitnhom_tv', PARAM_INT);
-        $m->hideIf('fitnhom_tv', 'fitnhom_loai', 'neq', self::NHOM);
+        // Ô các bạn chỉ hiện khi nút "Bài nhóm" được chọn. 0.1–0.2.3 dùng 'neq': Moodle bỏ qua nút chưa chọn nên lúc chưa chọn
+        // nút nào ô vẫn hiện (0.2.4 — chủ dự án 01/11/2026 12:44, 15:11).
+        $m->hideIf('fitnhom_tv', 'fitnhom_loai', 'notchecked', self::NHOM);
     }
 
     /**
