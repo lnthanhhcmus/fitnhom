@@ -1,6 +1,6 @@
 # Sổ tay Fit-Nhóm — đọc 5 phút nhớ lại tất cả
 
-Cập nhật: 01/11/2026 — **bản 0.2.1** (version 2026110101) phát hành theo góp ý của chủ dự án khi cài thử 0.2; 33 bài PHPUnit đạt (14 bài 0.1 + 14 bài 0.2 + 5 bài `ban021_test`), lint sạch, `mod_assign` của Moodle 374 bài đạt, `dev/walk_021.py` đạt. Thiết kế sản phẩm **TL54 v0.6**; **đợt 1.8** ở **TL60 v1.3** (`docs/TL60_…md`, bản chép của `fit-cnl/docs/1.0/` — đổi thì đổi cả hai, ghi mục 13). Bước 2 (FIT-CNL 1.8.0) làm ở kho `fit-cnl` — hợp đồng không đổi ở 0.2.1.
+Cập nhật: 01/11/2026 11:30 — **bản 0.2.2** (version 2026110102): như 0.2.1, bỏ câu giải thích dưới nhãn *Thành viên nhóm*, nút *Bài nhóm* gọn (chủ dự án 11:22). 0.2.1 (sáng cùng ngày) theo góp ý khi cài thử 0.2. 33 bài PHPUnit đạt, lint sạch, `mod_assign` 374 bài đạt, `dev/walk_021.py` 11/11. Thiết kế sản phẩm **TL54 v0.6**; **đợt 1.8** ở **TL60 v1.3** (`docs/TL60_…md`, bản chép của `fit-cnl/docs/1.0/` — đổi thì đổi cả hai, ghi mục 13). Bước 2 (FIT-CNL 1.8.0) làm ở kho `fit-cnl` — hợp đồng không đổi.
 
 ## 1. Tình trạng
 - Kho `lnthanhhcmus/fitnhom`. Thư mục Drive: `Thiết kế hệ thống hỗ trợ CNL\Fit-Nhom\` (Thiet-ke, Cai-dat, Anh, Huong-dan).
@@ -8,6 +8,7 @@ Cập nhật: 01/11/2026 — **bản 0.2.1** (version 2026110101) phát hành th
 - 0.1: PHPUnit 14 bài đạt, phpcs + moodlecheck sạch, `dev/walk_01.py` 12/12.
 - 0.2 (31/10/2026): PHPUnit 28 bài (`ban02_test` 13 + `hopdong_test` thêm 1), phpcs + moodlecheck sạch, `mod_assign` 374 bài đạt khi có plugin, `dev/walk_02.py` 15/15 (8 ảnh `docs/anh/0.2/`). Gói `dist/*_0.2.zip` + `SHA256SUMS_0.2.txt` (không vào kho; chép Drive `Fit-Nhom\Cai-dat\`). Phiếu `docs/huong-dan/Phieu-cai-dat_0.2.md`.
 - 0.2.1 (01/11/2026, góp ý khi cài thử 0.2): câu *Thành viên nhóm*; dòng đỏ khi chưa chọn (lỗi 0.1–0.2: hai nút rời không có chỗ hiện lỗi); cạnh tên bạn đã nộp có liệt kê em; tệp `Thanh-vien-nhom.txt` trong *Tải toàn bộ bài nộp* (Q2 điều chỉnh); thư người gửi FIT-MOODLE, có chào / ký, chữ *liệt kê*. PHPUnit 33 bài, `walk_021.py` (5 ảnh `docs/anh/0.2.1/`). Gói `dist/*_0.2.1.zip` + `SHA256SUMS_0.2.1.txt`. Phiếu `docs/huong-dan/Phieu-cai-dat_0.2.1.md`.
+- 0.2.2 (01/11/2026 11:30): chỉ đổi chữ — bỏ dòng *"Bắt buộc chọn một …"* (dễ hiểu nhầm là bắt buộc làm một mình), nút *Bài nhóm*; nhãn nằm trên nhóm hai nút. Gói `dist/*_0.2.2.zip` + `SHA256SUMS_0.2.2.txt`, phiếu `docs/huong-dan/Phieu-cai-dat_0.2.2.md`, ảnh `docs/anh/0.2.2/`.
 
 ## 2. Vì sao có dự án này
 Bài nhóm chỉ một bạn nộp → Moodle / FIT-CNL coi các bạn khác là chưa nộp. Người nộp khai thành viên ngay lúc nộp (TL54 mục 0; các cách đã loại).
@@ -38,7 +39,7 @@ bash dev/lint.sh        # phpcs + moodlecheck
 bash dev/amd.sh         # dựng amd/build
 python3 dev/walk_01.py  # đi thử 0.1 bằng trình duyệt, ảnh vào docs/anh/0.1/
 python3 dev/walk_02.py  # đi thử 0.2 (trang giảng viên, Excel, Tình hình, hộp nổi), ảnh vào docs/anh/0.2/
-python3 dev/walk_021.py # đi thử 0.2.1 (dòng đỏ, bạn đã nộp, gói tải có tệp ghi chú, thư), ảnh vào docs/anh/0.2.1/
+python3 dev/walk_021.py # đi thử 0.2.1 / 0.2.2 (dòng đỏ, bạn đã nộp, gói tải có tệp ghi chú, thư), ảnh vào docs/anh/0.2.2/
 bash dev/package.sh     # zip + SHA256 vào dist/
 python3 dev/mkdocx.py <md> <docx> [thư-mục-ảnh]
 ```
@@ -48,7 +49,7 @@ python3 dev/mkdocx.py <md> <docx> [thư-mục-ảnh]
 - 0.1 (tôi chọn, ghi ở TL54 / phiếu): không chặn nút *Nộp để chấm* (bài qua ứng dụng không bị kẹt); người nộp thay (quyền sửa bài nộp của em) không bị bắt buộc khai; bảng chấm dòng bạn không tự nộp ghi *Có trong bài nhóm của …*; lúc bật chỉ ghi lần đầu (tắt rồi bật lại không đặt lại).
 - Đợt 1.8 (31/10, TL60 mục 2.1): D1–D9 — lúc nộp = `assign_submission.timemodified` (cả hai bên); nhận diện lớp chủ nhiệm bằng `course.format` (mặc định `fitcnl`); thứ tự Fit-Nhóm 0.2 trước, FIT-CNL 1.8.0 sau, một phiên; `HOPDONG` giữ 1 khi chỉ thêm hàm. Q8 (trợ giảng xem trang *Thành viên nhóm*): **có** — ai có `mod/assign:grade`. Q9: giữ khối Cần xem, ngưỡng 3 / 5 (cấu hình).
 - 0.2 (phiên viết mã Opus, TL60 mục 13 v1.2): `cho::quet()` giữ trả số (bài kiểm cũ), `quet_xem()` trả mảng; thân hộp nổi ở `hook_callbacks::them_vao()` để bài kiểm gọi; *Bài nộp* ở trang giảng viên / Theo course đếm bài nộp **từ lúc bật**; *Được tính nhờ nhóm* = em có trong `api::thanhvien()` mà không có bài nộp riêng đã gửi; khối Cần xem (a) một dòng mỗi người nộp kèm các course · bài, (b) một dòng mỗi (bài, em); tên chỉ hiện khi bấm *Xem*.
-- 0.2.1 (chủ dự án 01/11/2026 10:32–10:45, TL60 mục 13 v1.3): câu hỏi **Thành viên nhóm** (không dùng *"(nếu có)"* vì câu bắt buộc); cạnh tên **chỉ** bạn đã nộp có liệt kê em (không lộ ai đã nộp); không thêm câu *đại diện / bản cập nhật*; **Q2 điều chỉnh** — *Tải toàn bộ bài nộp* có tệp ghi chú (không đổi tên tệp em nộp); thư: người gửi FIT-MOODLE (cấu hình), *Chào em,*, *liệt kê*, liên kết *Em không cùng làm bài này*, ký *Hệ thống FIT-MOODLE*. Phần *"(qua <tên trang>)"* sau tên người gửi là cài đặt chung Moodle (*Email đi › Thông tin "qua"* = *Không bao giờ* thì mất) — việc của quản trị trang, Fit-Nhóm không đổi.
+- 0.2.1 (chủ dự án 01/11/2026 10:32–10:45, TL60 mục 13 v1.3): câu hỏi **Thành viên nhóm** (không dùng *"(nếu có)"* vì câu bắt buộc; 0.2.2 bỏ dòng giải thích — "đừng ghi dài dòng"); cạnh tên **chỉ** bạn đã nộp có liệt kê em (không lộ ai đã nộp); không thêm câu *đại diện / bản cập nhật*; **Q2 điều chỉnh** — *Tải toàn bộ bài nộp* có tệp ghi chú (không đổi tên tệp em nộp); thư: người gửi FIT-MOODLE (cấu hình), *Chào em,*, *liệt kê*, liên kết *Em không cùng làm bài này*, ký *Hệ thống FIT-MOODLE*. Phần *"(qua <tên trang>)"* sau tên người gửi là cài đặt chung Moodle (*Email đi › Thông tin "qua"* = *Không bao giờ* thì mất) — việc của quản trị trang, Fit-Nhóm không đổi.
 
 ## 6. Chỗ chưa làm / biết lỗi
 - Ứng dụng Moodle trên điện thoại không hiện câu hỏi (chưa thử máy thật) — bài đi vào hộp nổi.
@@ -60,6 +61,6 @@ python3 dev/mkdocx.py <md> <docx> [thư-mục-ảnh]
 - Trang giảng viên / Theo course đếm bằng truy vấn gộp, chưa đo trên course nghìn bài nộp (đo khi chủ dự án thử thật).
 
 ## 7. Việc kế tiếp
-1. Chủ dự án cài thử **0.2.1** (Phiếu cài đặt 0.2.1 mục C–D; nâng từ 0.2 / 0.1 hay cài mới) trên Moodle thử, thử một course; báo nếu menu *Thêm* không có *Thành viên nhóm*.
+1. Chủ dự án cài thử **0.2.2** (Phiếu cài đặt 0.2.2 mục C–D; nâng từ 0.2.1 / 0.2 / 0.1 hay cài mới) trên Moodle thử, thử một course; báo nếu menu *Thêm* không có *Thành viên nhóm*.
 2. Đợt 1.8 tiếp: **bước 2 FIT-CNL 1.8.0** (TL60 mục 6, kho `fit-cnl`); **bước 3** kiểm chéo TL60 mục 8 (ghi kết quả vào `nhat-ky.md` hai kho).
 3. Fit-Nhóm 0.3 (TL60 mục 10): ứng dụng Moodle trên điện thoại — chỉ sau khi thử 0.1 / 0.2 trên máy thật.

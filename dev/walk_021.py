@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Đi thử Fit-Nhóm 0.2.1 bằng trình duyệt trên Moodle phát triển, chụp ảnh vào docs/anh/0.2.1/ (góp ý chủ dự án 01/11/2026).
+"""Đi thử Fit-Nhóm 0.2.1 / 0.2.2 bằng trình duyệt trên Moodle phát triển, chụp ảnh vào docs/anh/0.2.2/ (góp ý chủ dự án 01/11/2026).
 
 Kịch bản: course FN-021 (bài tập văn bản trực tuyến), năm sinh viên A–E, một giảng viên; chế độ Bật toàn trang.
-(1) A mở trang nộp: câu "Thành viên nhóm" mới; bấm Lưu khi chưa chọn → dòng đỏ ngay dưới hai nút.
+(1) A mở trang nộp: nhãn "Thành viên nhóm", hai nút, không câu giải thích (0.2.2); bấm Lưu khi chưa chọn → dòng đỏ.
 (2) Dữ liệu dựng bằng PHP: A nộp bài nhóm liệt kê B, C, E; C báo không cùng làm; B nộp bản cập nhật một giờ sau (liệt kê A);
     D làm một mình. E mở trang nộp: khung xanh "Bạn A đã nộp …", ô chọn bạn ghi cạnh tên A "đã nộp lúc …, có tên em trong
     nhóm"; cạnh tên B, D (đã nộp nhưng không liệt kê E) không ghi gì.
@@ -30,7 +30,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from walk_02 import ADMIN, BASE, KQ, MK, bo_tour, go, kiem, login, php  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = os.path.join(REPO, "docs", "anh", "0.2.1")
+OUT = os.path.join(REPO, "docs", "anh", "0.2.2")
 
 
 def shot(pg, name, sel=None):
@@ -52,7 +52,7 @@ $cfg = ['chedo' => get_config('local_fitnhom', 'chedo'), 'khoathu' => get_config
   'nguoigui' => get_config('local_fitnhom', 'nguoigui'), 'lang' => $DB->get_field('user', 'lang', ['id' => get_admin()->id])];
 $DB->set_field('user', 'lang', 'vi', ['id' => get_admin()->id]);
 $kq = ['cfg' => $cfg];
-$c = $g->create_course(['shortname' => 'FN-021', 'fullname' => 'Nhập môn lập trình (thử Fit-Nhóm 0.2.1)']);
+$c = $g->create_course(['shortname' => 'FN-021', 'fullname' => 'Nhập môn lập trình (thử Fit-Nhóm)']);
 $kq['c'] = (int) $c->id;
 $ten = [['An', 'Nguyễn Văn'], ['Bình', 'Trần Thị'], ['Cường', 'Lê Văn'], ['Dung', 'Phạm Thị'], ['Em', 'Hoàng Văn']];
 foreach ($ten as $i => [$f, $l]) {
@@ -98,7 +98,7 @@ THU = r"""
 $d = json_decode('%s', true); $u = $d['u'];
 $nop = core_user::get_user($u[0]); $nhan = core_user::get_user($u[4]);
 force_current_language('vi');
-$a = (object) ['ban' => fullname($nop), 'bai' => 'Đồ án nhóm 1', 'mon' => 'Nhập môn lập trình (thử Fit-Nhóm 0.2.1)',
+$a = (object) ['ban' => fullname($nop), 'bai' => 'Đồ án nhóm 1', 'mon' => 'Nhập môn lập trình (thử Fit-Nhóm)',
   'url' => (new moodle_url('/local/fitnhom/tuchoi.php', ['id' => 1]))->out(false),
   'urlbai' => (new moodle_url('/mod/assign/view.php', ['id' => $d['cm']]))->out(false),
   'ky' => \local_fitnhom\thongbao::ky_ten()];
@@ -154,9 +154,10 @@ def chay():
             bo_tour(pg)
             pg.wait_for_timeout(800)
             nhom = pg.locator("#fgroup_id_fitnhom_loai")
-            kiem("Thành viên nhóm" in pg.inner_text("#fitem_id_fitnhom_gioithieu")
-                 and "Bắt buộc chọn một" in pg.content() and "em nộp cho cả nhóm" in pg.content(),
-                 "(1) Câu mới: Thành viên nhóm — Bắt buộc chọn một … / Bài nhóm — em nộp cho cả nhóm")
+            kiem("Thành viên nhóm" in pg.inner_text("#fgroup_id_fitnhom_loai")
+                 and pg.locator("#id_fitnhom_loai_NHOM").locator("xpath=..").inner_text().strip() == "Bài nhóm"
+                 and "Bắt buộc chọn một" not in pg.content() and "các bạn được tính đã nộp" not in pg.content(),
+                 "(1) Nhãn Thành viên nhóm, hai nút Em làm một mình / Bài nhóm, không câu giải thích (0.2.2)")
             pg.locator("#id_submitbutton").click(force=True)
             pg.wait_for_load_state("networkidle")
             pg.wait_for_timeout(600)
@@ -164,9 +165,9 @@ def chay():
             loi = pg.locator("#fgroup_id_error_fitnhom_loai")
             kiem(loi.count() == 1 and loi.is_visible() and "Em chọn" in loi.inner_text(),
                  "(1) Chưa chọn mà bấm Lưu: dòng đỏ dưới hai nút")
-            pg.evaluate("() => { const f = document.querySelector('#fitem_id_fitnhom_gioithieu');"
+            pg.evaluate("() => { const f = document.querySelector('#fgroup_id_fitnhom_loai');"
                         " f.scrollIntoView({block: 'start'}); window.scrollBy(0, -20); }")
-            box = pg.locator("#fitem_id_fitnhom_gioithieu").bounding_box()
+            box = pg.locator("#fgroup_id_fitnhom_loai").bounding_box()
             box2 = pg.locator("#fitem_id_fitnhom_tv").bounding_box()
             pg.screenshot(path=os.path.join(OUT, "01-chua-chon-dong-do.png"),
                           clip={"x": box["x"] - 10, "y": box["y"] - 10, "width": 980,
@@ -189,7 +190,7 @@ def chay():
                  "(2) B, D đã nộp nhưng không liệt kê E: không ghi gì cạnh tên")
             pg.locator("#fitem_id_fitnhom_tv .form-autocomplete-downarrow").first.click()
             pg.wait_for_timeout(600)
-            box = pg.locator("#fitem_id_fitnhom_gioithieu").bounding_box()
+            box = pg.locator("#fitem_id_fitnhom_goiy").bounding_box()
             sug = pg.locator("#fitem_id_fitnhom_tv .form-autocomplete-suggestions").bounding_box()
             pg.screenshot(path=os.path.join(OUT, "02-ban-da-nop-co-ten-em.png"),
                           clip={"x": box["x"] - 10, "y": box["y"] - 10, "width": 980,
@@ -212,7 +213,7 @@ def chay():
             cay = "".join('<div%s>%s</div>' % (' class="moi"' if n in ghichu else "", html.escape(n)) for n in ten)
             ten_a = next(n for n in ghichu if ghichu[n] == ta)
             noidung = ('<h1>Tải toàn bộ bài nộp — %s</h1><div class="hop"><div class="dau">Các tệp trong gói (dòng tô vàng: '
-                       'tệp ghi chú Fit-Nhóm 0.2.1)</div><div class="cay">%s</div></div><br><div class="hop"><div class="dau">'
+                       'tệp ghi chú Fit-Nhóm)</div><div class="cay">%s</div></div><br><div class="hop"><div class="dau">'
                        'Mở <b>%s</b></div><pre>%s</pre></div>'
                        % (html.escape(ten_zip(r.headers.get("content-disposition", ""))),
                           cay, html.escape(ten_a), html.escape(ta)))

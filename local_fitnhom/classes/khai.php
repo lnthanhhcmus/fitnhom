@@ -403,21 +403,16 @@ class khai {
      * @return void
      */
     public static function them_cau_hoi(\MoodleQuickForm $m, array $ungvien, string $goiy, bool $batbuoc): void {
-        $m->addElement(
-            'static',
-            'fitnhom_gioithieu',
-            get_string('cauhoi', 'local_fitnhom'),
-            \html_writer::span(get_string('cauhoi_vi', 'local_fitnhom'), 'text-muted')
-        );
         if ($goiy !== '') {
             $m->addElement('static', 'fitnhom_goiy', '', \html_writer::div($goiy, 'alert alert-info mb-0'));
         }
+        // Nhãn "Thành viên nhóm" + hai nút, không câu giải thích (chủ dự án 01/11/2026 11:22: "đừng ghi dài dòng quá").
         // Hai nút trong một nhóm cùng tên (appendName = false): khung nhóm có chỗ hiện dòng báo đỏ của luật bắt buộc —
         // hai nút rời thì Moodle không có chỗ hiện, em bấm Lưu không thấy gì (góp ý 01/11/2026).
         $m->addGroup([
             $m->createElement('radio', 'fitnhom_loai', '', get_string('chon_mot', 'local_fitnhom'), self::MOT),
             $m->createElement('radio', 'fitnhom_loai', '', get_string('chon_nhom', 'local_fitnhom'), self::NHOM),
-        ], 'fitnhom_loai', '', \html_writer::empty_tag('br'), false);
+        ], 'fitnhom_loai', get_string('cauhoi', 'local_fitnhom'), \html_writer::empty_tag('br'), false);
         $m->setType('fitnhom_loai', PARAM_ALPHA);
         if ($batbuoc) {
             $m->addRule('fitnhom_loai', get_string('loi_chuachon', 'local_fitnhom'), 'required', null, 'client');
